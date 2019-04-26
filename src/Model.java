@@ -1,4 +1,5 @@
 
-public class Model {
+public class Model 
+{
 	
 }

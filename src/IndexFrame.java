@@ -14,7 +14,7 @@ public class IndexFrame extends JFrame
 	Connection conn = null;
 	PreparedStatement statement = null;
 	
-	JLabel introLabel = new JLabel("Welcome");
+	JLabel introLabel = new JLabel("Welcome to the VideoGameSite Control Panel");
 	
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
@@ -37,8 +37,6 @@ public class IndexFrame extends JFrame
 		this.setSize(700, 400);
 		this.setLocation(450, 200);
 		this.setLayout(new GridLayout(4, 1));
-		introLabel.setPreferredSize(getMaximumSize());
-		introLabel.setAlignmentX(CENTER_ALIGNMENT);
 	
 		this.add(introLabel);
 		this.add(categoriesButton);
@@ -51,8 +49,7 @@ public class IndexFrame extends JFrame
 	}
 }
 class CompanyView implements ActionListener
-{
-	
+{	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		CompanyFrame company = new CompanyFrame();

@@ -9,8 +9,6 @@ public class MainClass {
 		// CategoryFrame myCaFrame = new CategoryFrame();
 		
 		IndexFrame index = new IndexFrame();
-		
-		
 	}
 
 }
