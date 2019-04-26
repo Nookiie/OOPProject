@@ -82,7 +82,7 @@ public class VideoGameFrame extends JFrame
 
 			String company = companyCombo.getSelectedItem().toString();
 			String category = categoryCombo.getSelectedItem().toString();
-			String sql = "insert into videogames values (null,?,?,?,?,?);";
+			String sql = "insert into videogames values (null,?,?);";
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -90,8 +90,8 @@ public class VideoGameFrame extends JFrame
 				state = conn.prepareStatement(sql);
 				state.setString(1, name);
 				state.setString(2, description);
-				state.setString(3, category);
-				state.setString(4, company);
+				// state.setString(3, category);
+				// state.setString(4, company);
 				
 				state.execute();	
 			} 

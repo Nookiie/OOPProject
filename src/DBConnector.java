@@ -11,7 +11,7 @@ public class DBConnector {
 		try 
 		{
 			Class.forName("org.h2.Driver");
-			conn = DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
+			conn = DriverManager.getConnection("jdbc:h2:tcp://localhost/server~/OOPProjectDB", "sa", "");
 		} 
 		catch (ClassNotFoundException e) 
 		{

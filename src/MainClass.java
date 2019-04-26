@@ -4,7 +4,7 @@ public class MainClass {
 
 	public static void main(String[] args) 
 	{
-		VideoGameFrame myFrame = new VideoGameFrame();
+		CategoryFrame myFrame = new CategoryFrame();
 		// CompanyFrame myCFrame = new CompanyFrame();
 		// CategoryFrame myCaFrame = new CategoryFrame();
 	}
