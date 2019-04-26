@@ -27,16 +27,9 @@ public class CompanyFrame extends JFrame
 	JLabel CompanyLabel = new JLabel("Add a Company");
 	JLabel nameLabel = new JLabel("Name:");
 	JLabel descriptionLabel = new JLabel("Description");
-	JLabel videoGameLabel = new JLabel("VideoGames:");
 	
 	JTextField nameTField = new JTextField();
-	JTextArea descriptionTField = new JTextArea();
-	
-	String[] companies = {"","Company"}; // Argument needs to be list of companies
-	String[] videoGames = {"","VideoGame"}; // Argument needs to be list of videoGames
-	
-	JComboBox<String> categoryCombo = new JComboBox<String>(companies);
-	JComboBox<String> videoGameCombo = new JComboBox<String>(videoGames);
+	JTextArea descriptionTField = new JTextArea();	
 	
 	public CompanyFrame() 
 	{
@@ -61,8 +54,6 @@ public class CompanyFrame extends JFrame
 		midPanel.add(descriptionLabel);	
 		midPanel.add(descriptionTField);
 		
-		midPanel.add(videoGameLabel);
-		midPanel.add(videoGameCombo);
 		
 		//midPanel
 		downPanel.add(addBtn);
@@ -78,8 +69,6 @@ public class CompanyFrame extends JFrame
 			String name = nameTField.getText();
 			String description = descriptionTField.getText();
 
-			String videoGame = videoGameCombo.getSelectedItem().toString();
-			String category = categoryCombo.getSelectedItem().toString();
 			String sql = "insert into companies values (null,?,?,?);";
 			
 			conn = DBConnector.getConnection();
@@ -88,7 +77,6 @@ public class CompanyFrame extends JFrame
 				state = conn.prepareStatement(sql);
 				state.setString(1, name);
 				state.setString(2, description);
-				state.setString(3, videoGame);
 				
 				state.execute();	
 			} 
@@ -115,9 +103,7 @@ public class CompanyFrame extends JFrame
 	private void clearForm() 
 	{
 		nameTField.setText("");
-		descriptionTField.setText("");
-		
-		videoGameCombo.setSelectedIndex(0);
+		descriptionTField.setText("");		
 	}
 
 }//end class MyFrame
