@@ -24,7 +24,7 @@ public class CategoryFrame extends JFrame
 	
 	JButton addBtn = new JButton("Add");
 	
-	JLabel CompanyLabel = new JLabel("Add a Category");
+	JLabel CategoryyLabel = new JLabel("Add a Category");
 	
 	JLabel nameLabel = new JLabel("Name:");
 	JLabel descriptionLabel = new JLabel("Description:");
@@ -46,7 +46,7 @@ public class CategoryFrame extends JFrame
 		
 		//upPanel
 		
-		upPanel.add(CompanyLabel);
+		upPanel.add(CategoryLabel);
 		
 		midPanel.setLayout(new GridLayout(4, 2));
 		
