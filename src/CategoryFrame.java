@@ -17,14 +17,14 @@ public class CategoryFrame extends JFrame
 {
 	Connection conn = null;
 	PreparedStatement state = null;
-	
+		
 	JPanel upPanel = new JPanel();
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
 	
 	JButton addBtn = new JButton("Add");
 	
-	JLabel CategoryyLabel = new JLabel("Add a Category");
+	JLabel categoryLabel = new JLabel("Add a Category");
 	
 	JLabel nameLabel = new JLabel("Name:");
 	
@@ -44,7 +44,7 @@ public class CategoryFrame extends JFrame
 		
 		//upPanel
 		
-		upPanel.add(CategoryLabel);
+		upPanel.add(categoryLabel);
 		
 		midPanel.setLayout(new GridLayout(4, 2));
 		
