@@ -10,6 +10,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -18,6 +19,7 @@ public class CompanyFrame extends JFrame
 	Connection conn = null;
 	PreparedStatement state = null;
 	
+	// JTabbedPane tabPanel = new JTabbedPane();
 	JPanel upPanel = new JPanel();
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
@@ -33,12 +35,13 @@ public class CompanyFrame extends JFrame
 	
 	public CompanyFrame() 
 	{
-		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(false);
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(700, 400);
 		this.setLocation(450, 200);
 		this.setLayout(new GridLayout(3, 1));
 
+		// this.add(tabPanel);
 		this.add(upPanel);
 		this.add(midPanel);
 		this.add(downPanel);

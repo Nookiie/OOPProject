@@ -42,7 +42,7 @@ public class VideoGameFrame extends JFrame
 	public VideoGameFrame() 
 	{
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(700, 400);
 		this.setLocation(450, 200);
 		this.setLayout(new GridLayout(3, 1));

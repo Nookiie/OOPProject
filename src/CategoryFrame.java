@@ -33,10 +33,11 @@ public class CategoryFrame extends JFrame
 	public CategoryFrame() 
 	{
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(700, 400);
 		this.setLocation(450, 200);
 		this.setLayout(new GridLayout(3, 1));
+		this.setName("categories");
 
 		this.add(upPanel);
 		this.add(midPanel);
