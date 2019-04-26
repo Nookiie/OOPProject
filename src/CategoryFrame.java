@@ -27,10 +27,8 @@ public class CategoryFrame extends JFrame
 	JLabel CompanyLabel = new JLabel("Add a Category");
 	
 	JLabel nameLabel = new JLabel("Name:");
-	JLabel descriptionLabel = new JLabel("Description:");
 	
 	JTextField nameTField = new JTextField();
-	JTextArea descriptionTField = new JTextArea();
 	
 	public CategoryFrame() 
 	{
@@ -52,8 +50,6 @@ public class CategoryFrame extends JFrame
 		
 		midPanel.add(nameLabel);
 		midPanel.add(nameTField);
-		midPanel.add(descriptionLabel);	
-		midPanel.add(descriptionTField);
 		
 		//midPanel
 		downPanel.add(addBtn);
@@ -67,16 +63,14 @@ public class CategoryFrame extends JFrame
 		public void actionPerformed(ActionEvent e) 
 		{
 			String name = nameTField.getText();
-			String description = descriptionTField.getText();
 
-			String sql = "insert into categories values (null,?,?);";
+			String sql = "insert into categories values (null,?);";
 			
 			conn = DBConnector.getConnection();
 			try 
 			{
 				state = conn.prepareStatement(sql);
 				state.setString(1, name);
-				state.setString(2, description);
 				
 				state.execute();	
 			} 
@@ -103,7 +97,6 @@ public class CategoryFrame extends JFrame
 	private void clearForm() 
 	{
 		nameTField.setText("");
-		descriptionTField.setText("");		
 	}
 
 }//end class MyFrame

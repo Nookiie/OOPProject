@@ -69,7 +69,7 @@ public class CompanyFrame extends JFrame
 			String name = nameTField.getText();
 			String description = descriptionTField.getText();
 
-			String sql = "insert into companies values (null,?,?,?);";
+			String sql = "insert into companies values (null,?,?);";
 			
 			conn = DBConnector.getConnection();
 			try 
