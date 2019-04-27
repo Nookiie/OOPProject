@@ -21,6 +21,7 @@ public abstract class BaseEntityFrame extends JFrame
 	Connection conn = null;
 	PreparedStatement state = null;
 	ResultSet result = null;
+	String referenceText = "default";
 	
 	// JTabbedPane tabPanel = new JTabbedPane();
 	JPanel upPanel = new JPanel();

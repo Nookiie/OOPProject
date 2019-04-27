@@ -1,6 +1,9 @@
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,6 +13,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -17,10 +22,15 @@ public class CategoryFrame extends JFrame
 {
 	Connection conn = null;
 	PreparedStatement state = null;
+	int id = -1;
+	String referenceText = "categories";
 		
 	JPanel upPanel = new JPanel();
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
+	
+	JTable sqlTable = new JTable();
+	JScrollPane scrollPane = new JScrollPane(sqlTable);
 	
 	JButton addBtn = new JButton("Add");
 	JButton editBtn = new JButton("Update");
@@ -50,11 +60,14 @@ public class CategoryFrame extends JFrame
 		upPanel.add(categoryLabel);
 		
 		midPanel.setLayout(new GridLayout(4, 2));
-		
 		midPanel.add(nameLabel);
 		midPanel.add(nameTField);
 		
-		//midPanel
+		downPanel.add(scrollPane);
+		scrollPane.setPreferredSize(new Dimension(350, 100));
+		sqlTable.setModel(DBConnector.getAllModel(referenceText));
+		sqlTable.addMouseListener(new MouseTableAction());
+		
 		downPanel.add(addBtn);
 		downPanel.add(editBtn);
 		downPanel.add(delBtn);
@@ -113,9 +126,63 @@ public class CategoryFrame extends JFrame
 	}
 	class DelAction implements ActionListener
 	{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String sql = "delete from " + referenceText + " where id=?";
+			conn = DBConnector.getConnection();
+			try {
+				state = conn.prepareStatement(sql);
+				state.setInt(1, id);
+				state.execute();
+				id = -1;
+				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}finally {
+				try {
+					state.close();
+					conn.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		
+	}
+}
+	class MouseTableAction implements MouseListener
+	{
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int row = sqlTable.getSelectedRow();
+			id = Integer.parseInt(sqlTable.getValueAt(row, 0).toString());
+			
+			if(e.getClickCount() > 1) {
+				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
+			}
+		}
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
 			// TODO Auto-generated method stub
 			
 		}

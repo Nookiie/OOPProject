@@ -1,6 +1,9 @@
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +29,9 @@ public class CompanyFrame extends JFrame
 	Connection conn = null;
 	PreparedStatement state = null;
 	ResultSet result = null;
+	int id = -1;
+	
+	String referenceText = "companies";
 	
 	// JTabbedPane tabPanel = new JTabbedPane();
 	JPanel upPanel = new JPanel();
@@ -33,7 +39,7 @@ public class CompanyFrame extends JFrame
 	JPanel downPanel = new JPanel();
 
 	JTable sqlTable = new JTable();
-	JScrollPane sqlPane = new JScrollPane(sqlTable);
+	JScrollPane scrollPane = new JScrollPane(sqlTable);
 	
 	JButton addBtn = new JButton("Add");
 	JButton editBtn = new JButton("Update");
@@ -76,12 +82,10 @@ public class CompanyFrame extends JFrame
 		downPanel.add(editBtn);
 		downPanel.add(delBtn);
 		
-		showItems(sqlTable);
-		sqlTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		sqlPane.getViewport().add(sqlTable);
-		
-		sqlTable.setSize(200,500);
-		downPanel.add(sqlPane);
+		downPanel.add(scrollPane);
+		scrollPane.setPreferredSize(new Dimension(350, 100));
+		sqlTable.setModel(DBConnector.getAllModel(referenceText));
+		sqlTable.addMouseListener(new MouseTableAction());
 		
 		addBtn.addActionListener(new AddAction());
 		editBtn.addActionListener(new EditAction());
@@ -175,7 +179,45 @@ public class CompanyFrame extends JFrame
 			clearForm();
 		}
 		
-	} 
+	}
+	class MouseTableAction implements MouseListener
+	{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int row = sqlTable.getSelectedRow();
+			id = Integer.parseInt(sqlTable.getValueAt(row, 0).toString());
+			if(e.getClickCount() > 1) {
+				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
+				descriptionTField.setText(sqlTable.getValueAt(row, 2).toString());
+			}			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	class EditAction implements ActionListener
 	{
 
@@ -186,15 +228,31 @@ public class CompanyFrame extends JFrame
 		}
 		
 	}
-	class DelAction implements ActionListener
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-		
+		class DelAction implements ActionListener
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String sql = "delete from " + referenceText + " where id=?";
+				conn = DBConnector.getConnection();
+				try {
+					state = conn.prepareStatement(sql);
+					state.setInt(1, id);
+					state.execute();
+					id = -1;
+					sqlTable.setModel(DBConnector.getAllModel(referenceText));
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}finally {
+					try {
+						state.close();
+						conn.close();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+				}
+			}	
+		}	
 	}
 
 	private void clearForm() 
