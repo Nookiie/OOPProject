@@ -26,7 +26,7 @@ public class VideoGameFrame extends JFrame
 	JButton editBtn = new JButton("Update");
 	JButton delBtn = new JButton("Delete");
 	
-	JLabel VideoGameLabel = new JLabel("Add a Video Game");
+	JLabel videoGameLabel = new JLabel("Add a Video Game");
 	JLabel nameLabel = new JLabel("Name:");
 	JLabel descriptionLabel = new JLabel("Description");
 	JLabel categoryLabel = new JLabel("Category:");
@@ -55,7 +55,7 @@ public class VideoGameFrame extends JFrame
 		
 		//upPanel
 		
-		upPanel.add(VideoGameLabel);
+		upPanel.add(videoGameLabel);
 		
 		midPanel.setLayout(new GridLayout(4, 2));
 		

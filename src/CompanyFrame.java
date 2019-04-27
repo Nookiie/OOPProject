@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -32,6 +33,7 @@ public class CompanyFrame extends JFrame
 	JPanel downPanel = new JPanel();
 
 	JTable sqlTable = new JTable();
+	JScrollPane sqlPane = new JScrollPane(sqlTable);
 	
 	JButton addBtn = new JButton("Add");
 	JButton editBtn = new JButton("Update");
@@ -75,15 +77,20 @@ public class CompanyFrame extends JFrame
 		downPanel.add(delBtn);
 		
 		showItems(sqlTable);
+		sqlTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		sqlPane.getViewport().add(sqlTable);
 		
-		sqlTable.setSize(500,500);
-		downPanel.add(sqlTable);
+		sqlTable.setSize(200,500);
+		downPanel.add(sqlPane);
+		
 		addBtn.addActionListener(new AddAction());
+		editBtn.addActionListener(new EditAction());
+		delBtn.addActionListener(new DelAction());
 		
 		//downPanel
 	}//end constructor
 	
-public void showItems(JTable sqlTable)
+	public void showItems(JTable sqlTable)
 	{
 		// ArrayList<Company> companies = new ArrayList<Company>();
 		try
@@ -91,7 +98,7 @@ public void showItems(JTable sqlTable)
 			Class.forName("org.h2.Driver");
 			String url = "jdbc:h2:tcp://localhost/server~/OOPProjectDB";
 			conn = DBConnector.getConnection();
-			String selectAllQuery = "SELECT * FROM COMPANIES";
+			String selectAllQuery = "select * from companies";
 			state = conn.prepareStatement(selectAllQuery);
 			result = state.executeQuery();
 			
@@ -130,7 +137,8 @@ public void showItems(JTable sqlTable)
 		}
 		// return result;
 	}
-class AddAction implements ActionListener
+	class AddAction implements ActionListener
+
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) 
@@ -167,7 +175,27 @@ class AddAction implements ActionListener
 			clearForm();
 		}
 		
-	} //end AddAction
+	} 
+	class EditAction implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	class DelAction implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 
 	private void clearForm() 
 	{

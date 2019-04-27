@@ -60,6 +60,8 @@ public class CategoryFrame extends JFrame
 		downPanel.add(delBtn);
 		
 		addBtn.addActionListener(new AddAction());
+		editBtn.addActionListener(new EditAction());
+		delBtn.addActionListener(new DelAction());
 		//downPanel
 	}//end constructor
 	
@@ -98,7 +100,27 @@ public class CategoryFrame extends JFrame
 			clearForm();
 		}
 		
-	}//end AddAction
+	}
+	class EditAction implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	class DelAction implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	
 	private void clearForm() 
 	{
