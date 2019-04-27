@@ -3,7 +3,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -11,25 +13,34 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import Entities.Company;
 
 public class CompanyFrame extends JFrame
 {
 	Connection conn = null;
 	PreparedStatement state = null;
+	ResultSet result = null;
 	
 	// JTabbedPane tabPanel = new JTabbedPane();
 	JPanel upPanel = new JPanel();
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
+
+	JTable sqlTable = new JTable();
 	
 	JButton addBtn = new JButton("Add");
-	
-	JLabel CompanyLabel = new JLabel("Add a Company");
+	JButton editBtn = new JButton("Update");
+	JButton delBtn = new JButton("Delete");
+
+	JLabel companyLabel = new JLabel("Add a Company");
 	JLabel nameLabel = new JLabel("Name:");
 	JLabel descriptionLabel = new JLabel("Description");
-	
+		
 	JTextField nameTField = new JTextField();
 	JTextArea descriptionTField = new JTextArea();	
 	
@@ -48,7 +59,7 @@ public class CompanyFrame extends JFrame
 		
 		//upPanel
 		
-		upPanel.add(CompanyLabel);
+		upPanel.add(companyLabel);
 		
 		midPanel.setLayout(new GridLayout(4, 2));
 		
@@ -57,14 +68,69 @@ public class CompanyFrame extends JFrame
 		midPanel.add(descriptionLabel);	
 		midPanel.add(descriptionTField);
 		
-		
 		//midPanel
+		
 		downPanel.add(addBtn);
+		downPanel.add(editBtn);
+		downPanel.add(delBtn);
+		
+		showItems(sqlTable);
+		
+		sqlTable.setSize(500,500);
+		downPanel.add(sqlTable);
 		addBtn.addActionListener(new AddAction());
+		
 		//downPanel
 	}//end constructor
 	
-	class AddAction implements ActionListener
+public void showItems(JTable sqlTable)
+	{
+		// ArrayList<Company> companies = new ArrayList<Company>();
+		try
+		{
+			Class.forName("org.h2.Driver");
+			String url = "jdbc:h2:tcp://localhost/server~/OOPProjectDB";
+			conn = DBConnector.getConnection();
+			String selectAllQuery = "SELECT * FROM COMPANIES";
+			state = conn.prepareStatement(selectAllQuery);
+			result = state.executeQuery();
+			
+			while(sqlTable.getRowCount() > 0) 
+	        {
+	            ((DefaultTableModel) sqlTable.getModel()).removeRow(0);
+	        }
+			
+			int columns = result.getMetaData().getColumnCount();
+			while(result.next())
+			{
+				Object[] row = new Object[columns];
+				for(int i = 1;i<=columns;i++)
+				{
+					row[i - 1] = result.getObject(i);
+				}	
+				((DefaultTableModel)sqlTable.getModel()).insertRow(result.getRow()-1,row);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try 
+			{
+				state.close();
+				conn.close();
+				result.close();
+			}
+			catch(SQLException e1)
+			{
+				e1.printStackTrace();
+			}	
+		}
+		// return result;
+	}
+class AddAction implements ActionListener
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) 
@@ -101,8 +167,8 @@ public class CompanyFrame extends JFrame
 			clearForm();
 		}
 		
-	}//end AddAction
-	
+	} //end AddAction
+
 	private void clearForm() 
 	{
 		nameTField.setText("");

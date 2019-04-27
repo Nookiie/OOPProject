@@ -7,7 +7,6 @@ public class DBConnector {
 	static Connection conn = null;
 	
 	public static Connection getConnection() {
-		
 		try 
 		{
 			Class.forName("org.h2.Driver");

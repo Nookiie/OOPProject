@@ -23,6 +23,8 @@ public class CategoryFrame extends JFrame
 	JPanel downPanel = new JPanel();
 	
 	JButton addBtn = new JButton("Add");
+	JButton editBtn = new JButton("Update");
+	JButton delBtn = new JButton("Delete");
 	
 	JLabel categoryLabel = new JLabel("Add a Category");
 	
@@ -54,6 +56,9 @@ public class CategoryFrame extends JFrame
 		
 		//midPanel
 		downPanel.add(addBtn);
+		downPanel.add(editBtn);
+		downPanel.add(delBtn);
+		
 		addBtn.addActionListener(new AddAction());
 		//downPanel
 	}//end constructor
