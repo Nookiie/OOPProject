@@ -34,7 +34,7 @@ public class VideoGameFrame extends JFrame
 	JButton delBtn = new JButton("Delete");
 	
 	JTable sqlTable = new JTable();
-	JScrollPane scrollPane = new JScrollPane();
+	JScrollPane scrollPane = new JScrollPane(sqlTable);
 	
 	JLabel videoGameLabel = new JLabel("Add a Video Game");
 	JLabel nameLabel = new JLabel("Name:");
