@@ -4,4 +4,3 @@ Feel free to judge and critique my terrible programming skills.
 
 # To-Do
 - Create Foreign Keys for Entity VideoGames
-- Create CRUD for all Entities
