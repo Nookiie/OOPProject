@@ -4,4 +4,4 @@ Feel free to judge and critique my terrible programming skills.
 
 # To-Do
 - Create Foreign Keys for Entity VideoGames
-- Create Index (A way to view all items) for all Entities from their Frames
+- Create CRUD for all Entities
