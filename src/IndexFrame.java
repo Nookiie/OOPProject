@@ -18,6 +18,7 @@ public class IndexFrame extends JFrame
 	
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
+	
 	JButton companiesButton = new JButton("Companies");
 	JButton categoriesButton = new JButton("Categories");
 	JButton videoGamesButton = new JButton("VideoGames");

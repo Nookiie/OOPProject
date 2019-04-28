@@ -94,53 +94,6 @@ public class CompanyFrame extends JFrame
 		//downPanel
 	}//end constructor
 	
-	public void showItems(JTable sqlTable)
-	{
-		// ArrayList<Company> companies = new ArrayList<Company>();
-		try
-		{
-			Class.forName("org.h2.Driver");
-			String url = "jdbc:h2:tcp://localhost/server~/OOPProjectDB";
-			conn = DBConnector.getConnection();
-			String selectAllQuery = "select * from companies";
-			state = conn.prepareStatement(selectAllQuery);
-			result = state.executeQuery();
-			
-			while(sqlTable.getRowCount() > 0) 
-	        {
-	            ((DefaultTableModel) sqlTable.getModel()).removeRow(0);
-	        }
-			
-			int columns = result.getMetaData().getColumnCount();
-			while(result.next())
-			{
-				Object[] row = new Object[columns];
-				for(int i = 1;i<=columns;i++)
-				{
-					row[i - 1] = result.getObject(i);
-				}	
-				((DefaultTableModel)sqlTable.getModel()).insertRow(result.getRow()-1,row);
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try 
-			{
-				state.close();
-				conn.close();
-				result.close();
-			}
-			catch(SQLException e1)
-			{
-				e1.printStackTrace();
-			}	
-		}
-		// return result;
-	}
 	class AddAction implements ActionListener
 	{
 		@Override
