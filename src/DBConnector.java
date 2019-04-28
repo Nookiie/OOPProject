@@ -63,16 +63,23 @@ public class DBConnector {
 			{
 				stringBuilder.append(state.getMetaData().getColumnName(i) + " , ");
 				if(i == columns)
+				{
+					stringBuilder.deleteCharAt(stringBuilder.length() - 2);
 					stringBuilder.append(" from " + entity);
+				}
+					
 			}
 			sql = stringBuilder.toString();
 			state = conn.prepareStatement(sql);
 			
-			result = state.executeQuery();
+			
 			model = new Model(result);
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
-		} catch (Exception e) {
+		} catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 		return model;

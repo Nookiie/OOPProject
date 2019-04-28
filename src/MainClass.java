@@ -8,6 +8,7 @@ public class MainClass {
 		// CompanyFrame myCFrame = new CompanyFrame();
 		// CategoryFrame myCaFrame = new CategoryFrame();
 		
+		// Make sure you have the H2 Server Open before running the project
 		IndexFrame index = new IndexFrame();
 	}
 

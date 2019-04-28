@@ -53,7 +53,7 @@ public class VideoGameFrame extends JFrame
 	
 	public VideoGameFrame() 
 	{
-		this.setVisible(true);
+		this.setVisible(false);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(700, 400);
 		this.setLocation(450, 200);
@@ -78,20 +78,20 @@ public class VideoGameFrame extends JFrame
 		midPanel.add(companyLabel);
 		midPanel.add(companyCombo);
 		
-		downPanel.add(scrollPane);
+		
 		scrollPane.setPreferredSize(new Dimension(350, 100));
 		sqlTable.setModel(DBConnector.getAllModel(referenceText));
 		sqlTable.addMouseListener(new MouseTableAction());
 		
-		//midPanel
+		downPanel.add(scrollPane);
 		downPanel.add(addBtn);
 		downPanel.add(editBtn);
 		downPanel.add(delBtn);
+
 		addBtn.addActionListener(new AddAction());
 		editBtn.addActionListener(new EditAction());
 		delBtn.addActionListener(new DelAction());
 	
-		//downPanel
 	}//end constructor
 	
 	class AddAction implements ActionListener
@@ -231,16 +231,19 @@ public class VideoGameFrame extends JFrame
 					e1.printStackTrace();
 			}
 		}
-	}
-		
-	}
-	
+	}	
+}
 	class MouseTableAction implements MouseListener
 	{
 
 		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+		public void mouseClicked(MouseEvent e) {
+			int row = sqlTable.getSelectedRow();
+			id = Integer.parseInt(sqlTable.getValueAt(row, 0).toString());
+			if(e.getClickCount() == 1) {
+				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
+				descriptionTField.setText(sqlTable.getValueAt(row, 2).toString());
+			}
 			
 		}
 

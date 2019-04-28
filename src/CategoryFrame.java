@@ -44,7 +44,7 @@ public class CategoryFrame extends JFrame
 	
 	public CategoryFrame() 
 	{
-		this.setVisible(true);
+		this.setVisible(false);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(700, 400);
 		this.setLocation(450, 200);
@@ -63,7 +63,6 @@ public class CategoryFrame extends JFrame
 		midPanel.add(nameLabel);
 		midPanel.add(nameTField);
 		
-		downPanel.add(scrollPane);
 		scrollPane.setPreferredSize(new Dimension(350, 100));
 		sqlTable.setModel(DBConnector.getAllModel(referenceText));
 		sqlTable.addMouseListener(new MouseTableAction());
@@ -71,6 +70,8 @@ public class CategoryFrame extends JFrame
 		downPanel.add(addBtn);
 		downPanel.add(editBtn);
 		downPanel.add(delBtn);
+		downPanel.add(scrollPane);
+	
 		
 		addBtn.addActionListener(new AddAction());
 		editBtn.addActionListener(new EditAction());
@@ -84,8 +85,8 @@ public class CategoryFrame extends JFrame
 		public void actionPerformed(ActionEvent e) 
 		{
 			String name = nameTField.getText();
-
-			String sql = "insert into categories values (null,?);";
+			sqlTable.setModel(DBConnector.getAllModel(referenceText));
+			String sql = "insert into "+ referenceText + " values (null,?);";
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -186,6 +187,7 @@ public class CategoryFrame extends JFrame
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			String sql = "delete from " + referenceText + " where id=?";
 			conn = DBConnector.getConnection();
 			try {
@@ -218,14 +220,13 @@ public class CategoryFrame extends JFrame
 			int row = sqlTable.getSelectedRow();
 			id = Integer.parseInt(sqlTable.getValueAt(row, 0).toString());
 			
-			if(e.getClickCount() > 1) {
+			if(e.getClickCount() == 1) {
 				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
 			}
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 

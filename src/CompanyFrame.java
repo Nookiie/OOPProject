@@ -78,14 +78,16 @@ public class CompanyFrame extends JFrame
 		
 		//midPanel
 		
+		scrollPane.setPreferredSize(new Dimension(350, 100));
+		sqlTable.setModel(DBConnector.getAllModel(referenceText));
+		
+		sqlTable.scrollRectToVisible(sqlTable.getCellRect(sqlTable.getRowCount() - 1, 0, true));
+		sqlTable.addMouseListener(new MouseTableAction());
+	
 		downPanel.add(addBtn);
 		downPanel.add(editBtn);
 		downPanel.add(delBtn);
-		
 		downPanel.add(scrollPane);
-		scrollPane.setPreferredSize(new Dimension(350, 100));
-		sqlTable.setModel(DBConnector.getAllModel(referenceText));
-		sqlTable.addMouseListener(new MouseTableAction());
 		
 		addBtn.addActionListener(new AddAction());
 		editBtn.addActionListener(new EditAction());
@@ -144,7 +146,7 @@ public class CompanyFrame extends JFrame
 				descriptionTField.setText(sqlTable.getValueAt(row, 2).toString());
 			}			
 		}
-
+		
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
 			// TODO Auto-generated method stub
@@ -249,6 +251,7 @@ public class CompanyFrame extends JFrame
 					state.setInt(1, id);
 					state.execute();
 					id = -1;
+					
 					sqlTable.setModel(DBConnector.getAllModel(referenceText));
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

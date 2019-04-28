@@ -12,7 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-public abstract class BaseEntityFrame extends JFrame
+import Entities.BaseEntity;
+
+public abstract class BaseEntityFrame <T extends BaseEntity> extends JFrame
 {
 /*
 	 * NOT USED YET
@@ -30,6 +32,7 @@ public abstract class BaseEntityFrame extends JFrame
 
 	JLabel label = new JLabel("What?");
 	JTable sqlTable = new JTable();
+
 	
 	JButton addBtn = new JButton("Add");
 	JButton editBtn = new JButton("Update");
@@ -39,6 +42,7 @@ public abstract class BaseEntityFrame extends JFrame
 	{
 		Connection conn = null;
 		PreparedStatement state = null;
+		
 			
 		JPanel upPanel = new JPanel();
 		JPanel midPanel = new JPanel();
@@ -70,17 +74,11 @@ public abstract class BaseEntityFrame extends JFrame
 	}
 	class AddAction implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			
 		}
-		
-	}
-	
-	public void showItems(JTable sqlTable, String sql)
-	{
 		
 	}
 }
