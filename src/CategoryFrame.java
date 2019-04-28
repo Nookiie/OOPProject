@@ -94,6 +94,8 @@ public class CategoryFrame extends JFrame
 				state.setString(1, name);
 				
 				state.execute();	
+				id = -1;
+				sqlTable.setModel(DBConnector.getAllModel(referenceText));
 			} 
 			catch (SQLException e1) 
 			{
@@ -119,8 +121,64 @@ public class CategoryFrame extends JFrame
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
+			String sql = "SELECT * FROM " + referenceText;
+			StringBuilder stringBuilder = new StringBuilder();
 			
+			conn = DBConnector.getConnection();
+			try {
+				state = conn.prepareStatement(sql);
+			} catch (SQLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			try
+			{
+				int columns = state.getMetaData().getColumnCount();
+				
+				sql = "update " + referenceText + " set ";
+				stringBuilder.append(sql);
+				for(int i = 2;i<=columns;i++)
+				{
+					
+					stringBuilder.append(state.getMetaData().getColumnName(i) + " = ?, ");
+					
+					if(i == columns)
+						stringBuilder.deleteCharAt(stringBuilder.length() - 2); // Removing the comma on the last SET query before when
+				}
+				
+				stringBuilder.append(" where ID = ?");
+				sql = stringBuilder.toString();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			String name = nameTField.getText();
+			
+			conn = DBConnector.getConnection();
+			try
+			{
+				state = conn.prepareStatement(sql);
+				state.setString(1,name);
+				state.setInt(2,id);
+				
+				state.execute();
+				id = -1;
+				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				try {
+					state.close();
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+			}
 		}
 		
 	}
@@ -134,6 +192,7 @@ public class CategoryFrame extends JFrame
 				state = conn.prepareStatement(sql);
 				state.setInt(1, id);
 				state.execute();
+				
 				id = -1;
 				sqlTable.setModel(DBConnector.getAllModel(referenceText));
 			} catch (SQLException e1) {
@@ -151,6 +210,7 @@ public class CategoryFrame extends JFrame
 		
 	}
 }
+	
 	class MouseTableAction implements MouseListener
 	{
 		@Override

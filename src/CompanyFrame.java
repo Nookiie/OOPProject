@@ -142,7 +142,6 @@ public class CompanyFrame extends JFrame
 		// return result;
 	}
 	class AddAction implements ActionListener
-
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) 
@@ -150,7 +149,7 @@ public class CompanyFrame extends JFrame
 			String name = nameTField.getText();
 			String description = descriptionTField.getText();
 
-			String sql = "insert into companies values (null,?,?);";
+			String sql = "insert into " + referenceText + " values (null,?,?);";
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -187,7 +186,7 @@ public class CompanyFrame extends JFrame
 		public void mouseClicked(MouseEvent e) {
 			int row = sqlTable.getSelectedRow();
 			id = Integer.parseInt(sqlTable.getValueAt(row, 0).toString());
-			if(e.getClickCount() > 1) {
+			if(e.getClickCount() == 1) {
 				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
 				descriptionTField.setText(sqlTable.getValueAt(row, 2).toString());
 			}			
@@ -223,8 +222,66 @@ public class CompanyFrame extends JFrame
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
+			String sql = "SELECT * FROM " + referenceText;
+			StringBuilder stringBuilder = new StringBuilder();
 			
+			conn = DBConnector.getConnection();
+			try {
+				state = conn.prepareStatement(sql);
+			} catch (SQLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			try
+			{
+				int columns = state.getMetaData().getColumnCount();
+				
+				sql = "update " + referenceText + " set ";
+				stringBuilder.append(sql);
+				for(int i = 2;i<=columns;i++)
+				{
+					
+					stringBuilder.append(state.getMetaData().getColumnName(i) + " = ?, ");
+					
+					if(i == columns)
+						stringBuilder.deleteCharAt(stringBuilder.length() - 2); // Removing the comma on the last SET query before when
+				}
+				
+				stringBuilder.append(" where ID = ?");
+				sql = stringBuilder.toString();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			String name = nameTField.getText();
+			String description = descriptionTField.getText();
+			
+			conn = DBConnector.getConnection();
+			try
+			{
+				state = conn.prepareStatement(sql);
+				state.setString(1,name);
+				state.setString(2,description);
+				state.setInt(3,id);
+				
+				state.execute();
+				id = -1;
+				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				try {
+					state.close();
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				
+			}
 		}
 		
 	}

@@ -12,6 +12,7 @@ public class DBConnector {
 	static ResultSet result = null;
 	static Model model = null;
 	
+	
 	public static Connection getConnection() {
 		try 
 		{
@@ -29,9 +30,26 @@ public class DBConnector {
 		return conn;
 	}
 	public static Model getAllModel(String entity) 
+	{		
+		
+		String sql = "select * from " + entity;
+			
+		conn = getConnection();
+		try {
+			PreparedStatement state = conn.prepareStatement(sql);
+			result = state.executeQuery();
+			model = new Model(result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
+	}//end method
+
+	public static Model getAllExceptIDModel(String entity)
 	{
 		String sql = "select * from " + entity;
-		
 		conn = getConnection();
 		try {
 			PreparedStatement state = conn.prepareStatement(sql);
@@ -45,6 +63,5 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 		return model;
-	}//end method
-
+	}
 }
