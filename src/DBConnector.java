@@ -46,12 +46,19 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 		return model;
-	}//end method
+	}
 	public void resetTable(String entity, JTable sqlTable)
 	{
 		sqlTable.setModel(DBConnector.getAllModel(entity));
-		sqlTable.getColumnModel().getColumn(0).setMinWidth(0);
-		sqlTable.getColumnModel().getColumn(0).setMaxWidth(0); // Hiding the ID from the Index Table	
+		
+		for(int i = 0;i < sqlTable.getColumnCount();i++)
+		{
+			if(sqlTable.getColumnName(i).contains("ID"))
+			{
+				sqlTable.getColumnModel().getColumn(i).setMinWidth(0);
+				sqlTable.getColumnModel().getColumn(i).setMaxWidth(0); // Hiding all IDs from the Index Table
+			}
+		}
 	}
 	public static Model getAllExceptIDModel(String entity) // NOT YET COMPLETE
 	{

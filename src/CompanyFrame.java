@@ -241,8 +241,7 @@ public class CompanyFrame extends JFrame
 				}
 				
 			}
-		}
-		
+		}	
 	}
 		class DelAction implements ActionListener
 		{

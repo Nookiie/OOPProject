@@ -58,8 +58,8 @@ public class VideoGameFrame extends JFrame
 	// ArrayList<Company> companies = new ArrayList<Company>();
 	// ArrayList<Category> categories = new ArrayList<Category>();
 	
-	String querySelectCompanies = "select * from companies";
-	String querySelectCategories = "select * from categories";
+	String querySelectCompanies = "select ID from companies";
+	String querySelectCategories = "select ID from categories";
 		
 	JComboBox<Object> categoryCombo = new JComboBox<Object>(companies);
 	JComboBox<Object> companyCombo = new JComboBox<Object>(categories);
