@@ -6,7 +6,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,12 +20,17 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import Entities.Category;
+import Entities.Company;
+
 public class VideoGameFrame extends JFrame
 {
 	Connection conn = null;
 	PreparedStatement state = null;
 	String referenceText = "videogames";
+	ResultSet result = null;
 	int id = -1;
+	DBConnector DBhelper = new DBConnector();
 	
 	JPanel upPanel = new JPanel();
 	JPanel midPanel = new JPanel();
@@ -45,11 +52,17 @@ public class VideoGameFrame extends JFrame
 	JTextField nameTField = new JTextField();
 	JTextArea descriptionTField = new JTextArea();
 	
-	String[] companies = {"","Company"}; // Argument needs to be list of companies
-	String[] categories = {"","Category"}; // Argument needs to be list of categories
+	 String[] companies = {"","Company"}; // Argument needs to be list of companies
+	 String[] categories = {"","Category"}; // Argument needs to be list of categories
 	
-	JComboBox<String> categoryCombo = new JComboBox<String>(companies);
-	JComboBox<String> companyCombo = new JComboBox<String>(categories);
+	// ArrayList<Company> companies = new ArrayList<Company>();
+	// ArrayList<Category> categories = new ArrayList<Category>();
+	
+	String querySelectCompanies = "select * from companies";
+	String querySelectCategories = "select * from categories";
+		
+	JComboBox<Object> categoryCombo = new JComboBox<Object>(companies);
+	JComboBox<Object> companyCombo = new JComboBox<Object>(categories);
 	
 	public VideoGameFrame() 
 	{
@@ -78,10 +91,12 @@ public class VideoGameFrame extends JFrame
 		midPanel.add(companyLabel);
 		midPanel.add(companyCombo);
 		
-		
 		scrollPane.setPreferredSize(new Dimension(350, 100));
-		sqlTable.setModel(DBConnector.getAllModel(referenceText));
+		DBhelper.resetTable(referenceText, sqlTable);
 		sqlTable.addMouseListener(new MouseTableAction());
+		
+		sqlTable.getColumnModel().getColumn(0).setMinWidth(0);
+		sqlTable.getColumnModel().getColumn(0).setMaxWidth(0); // Hiding the ID from the Index Table
 		
 		downPanel.add(scrollPane);
 		downPanel.add(addBtn);
@@ -117,7 +132,7 @@ public class VideoGameFrame extends JFrame
 				
 				state.execute();	
 				id = -1;
-				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+				DBhelper.resetTable(referenceText, sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -187,7 +202,7 @@ public class VideoGameFrame extends JFrame
 				
 				state.execute();
 				id = -1;
-				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+				DBhelper.resetTable(referenceText, sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -218,7 +233,7 @@ public class VideoGameFrame extends JFrame
 				state.setInt(1, id);
 				state.execute();
 				id = -1;
-				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+				DBhelper.resetTable(referenceText, sqlTable);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

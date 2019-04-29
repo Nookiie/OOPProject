@@ -6,6 +6,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JTable;
+
 public class DBConnector {
 	
 	static Connection conn = null;
@@ -35,7 +37,7 @@ public class DBConnector {
 		try {
 			PreparedStatement state = conn.prepareStatement(sql);
 			state = conn.prepareStatement(sql);
-			
+
 			result = state.executeQuery();
 			model = new Model(result);
 		} catch (SQLException e) {
@@ -45,7 +47,12 @@ public class DBConnector {
 		}
 		return model;
 	}//end method
-
+	public void resetTable(String entity, JTable sqlTable)
+	{
+		sqlTable.setModel(DBConnector.getAllModel(entity));
+		sqlTable.getColumnModel().getColumn(0).setMinWidth(0);
+		sqlTable.getColumnModel().getColumn(0).setMaxWidth(0); // Hiding the ID from the Index Table	
+	}
 	public static Model getAllExceptIDModel(String entity) // NOT YET COMPLETE
 	{
 		String sql = "select ";

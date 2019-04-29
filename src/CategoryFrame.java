@@ -24,6 +24,7 @@ public class CategoryFrame extends JFrame
 	PreparedStatement state = null;
 	int id = -1;
 	String referenceText = "categories";
+	DBConnector DBhelper = new DBConnector();
 		
 	JPanel upPanel = new JPanel();
 	JPanel midPanel = new JPanel();
@@ -64,7 +65,7 @@ public class CategoryFrame extends JFrame
 		midPanel.add(nameTField);
 		
 		scrollPane.setPreferredSize(new Dimension(350, 100));
-		sqlTable.setModel(DBConnector.getAllModel(referenceText));
+		DBhelper.resetTable(referenceText, sqlTable);
 		sqlTable.addMouseListener(new MouseTableAction());
 		
 		downPanel.add(addBtn);
@@ -72,7 +73,6 @@ public class CategoryFrame extends JFrame
 		downPanel.add(delBtn);
 		downPanel.add(scrollPane);
 	
-		
 		addBtn.addActionListener(new AddAction());
 		editBtn.addActionListener(new EditAction());
 		delBtn.addActionListener(new DelAction());
@@ -85,7 +85,7 @@ public class CategoryFrame extends JFrame
 		public void actionPerformed(ActionEvent e) 
 		{
 			String name = nameTField.getText();
-			sqlTable.setModel(DBConnector.getAllModel(referenceText));
+			DBhelper.resetTable(referenceText, sqlTable);
 			String sql = "insert into "+ referenceText + " values (null,?);";
 			
 			conn = DBConnector.getConnection();
@@ -96,7 +96,7 @@ public class CategoryFrame extends JFrame
 				
 				state.execute();	
 				id = -1;
-				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+				DBhelper.resetTable(referenceText, sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -164,7 +164,7 @@ public class CategoryFrame extends JFrame
 				
 				state.execute();
 				id = -1;
-				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+				DBhelper.resetTable(referenceText, sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -196,7 +196,7 @@ public class CategoryFrame extends JFrame
 				state.execute();
 				
 				id = -1;
-				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+				DBhelper.resetTable(referenceText, sqlTable);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import Entities.Company;
 
@@ -30,6 +31,7 @@ public class CompanyFrame extends JFrame
 	PreparedStatement state = null;
 	ResultSet result = null;
 	int id = -1;
+	DBConnector DBhelper = new DBConnector();
 	
 	String referenceText = "companies";
 	
@@ -77,11 +79,13 @@ public class CompanyFrame extends JFrame
 		midPanel.add(descriptionTField);
 		
 		//midPanel
-		
+	
 		scrollPane.setPreferredSize(new Dimension(350, 100));
-		sqlTable.setModel(DBConnector.getAllModel(referenceText));
+		DBhelper.resetTable(referenceText, sqlTable);
 		
-		sqlTable.scrollRectToVisible(sqlTable.getCellRect(sqlTable.getRowCount() - 1, 0, true));
+		sqlTable.getColumnModel().getColumn(0).setMinWidth(0);
+		sqlTable.getColumnModel().getColumn(0).setMaxWidth(0); // Hiding the ID from the Index Table
+		
 		sqlTable.addMouseListener(new MouseTableAction());
 	
 		downPanel.add(addBtn);
@@ -221,7 +225,7 @@ public class CompanyFrame extends JFrame
 				
 				state.execute();
 				id = -1;
-				sqlTable.setModel(DBConnector.getAllModel(referenceText));
+				DBhelper.resetTable(referenceText, sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -251,8 +255,7 @@ public class CompanyFrame extends JFrame
 					state.setInt(1, id);
 					state.execute();
 					id = -1;
-					
-					sqlTable.setModel(DBConnector.getAllModel(referenceText));
+					DBhelper.resetTable(referenceText, sqlTable);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
