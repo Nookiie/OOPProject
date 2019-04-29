@@ -8,8 +8,8 @@ import java.sql.Statement;
 
 import javax.swing.JTable;
 
-public class DBConnector {
-	
+public class DBConnector 
+{	
 	static Connection conn = null;
 	static ResultSet result = null;
 	static Model model = null;
