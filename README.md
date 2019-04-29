@@ -3,5 +3,5 @@ This was made as part of a training exercise by my university's Practice Course.
 Feel free to judge and critique my terrible programming skills.
 
 # To-Do
-- Create Foreign Keys for Entity VideoGames
+- Provide functionality for Foreign Keys of Entity Videogames
 - Make the GUI more presentable
