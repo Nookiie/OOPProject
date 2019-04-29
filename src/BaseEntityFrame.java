@@ -17,9 +17,13 @@ import Entities.BaseEntity;
 public abstract class BaseEntityFrame <T extends BaseEntity> extends JFrame
 {
 /*
-	 * NOT USED YET
-	 * MIGHT BE USED LATER IN THE FUTURE 
+* MY POOR ATTEMPT TO START USING GENERICS
+* THIS IS WHEN I FOUND OUT JAVA GENERICS SUCK
+* 
+* THIS CLASS IS NOT USED YET
+ * MIGHT BE USED LATER IN THE FUTURE 
 */ 
+	
 	Connection conn = null;
 	PreparedStatement state = null;
 	ResultSet result = null;

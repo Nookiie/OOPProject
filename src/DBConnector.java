@@ -34,7 +34,8 @@ public class DBConnector {
 		String sql = "select * from " + entity;
 		
 		conn = getConnection();
-		try {
+		try 
+		{
 			PreparedStatement state = conn.prepareStatement(sql);
 			state = conn.prepareStatement(sql);
 
@@ -60,7 +61,8 @@ public class DBConnector {
 			}
 		}
 	}
-	public static Model getAllExceptIDModel(String entity) // NOT YET COMPLETE
+	/*
+	public static Model getAllExceptIDModel(String entity) // NOT USED (ORIGINAL PLAN TO HIDE ID)
 	{
 		String sql = "select ";
 		StringBuilder stringBuilder = new StringBuilder();
@@ -98,4 +100,5 @@ public class DBConnector {
 		}
 		return model;
 }
+*/
 }

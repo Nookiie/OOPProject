@@ -16,9 +16,8 @@ public class Model extends AbstractTableModel
 	
 	public Model(ResultSet result) throws Exception
 	{
-		setResult(result);
+		setResult(result); // I am setting a result here	
 	}
-	
 	public void setResult(ResultSet rs) throws Exception
 	{
 		this.result = rs;

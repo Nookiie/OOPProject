@@ -190,7 +190,8 @@ public class CategoryFrame extends JFrame
 			
 			String sql = "delete from " + referenceText + " where id=?";
 			conn = DBConnector.getConnection();
-			try {
+			try 
+			{
 				state = conn.prepareStatement(sql);
 				state.setInt(1, id);
 				state.execute();
