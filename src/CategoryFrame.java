@@ -1,92 +1,31 @@
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
-public class CategoryFrame extends JFrame
-{
-	Connection conn = null;
-	PreparedStatement state = null;
-	int id = -1;
-	String referenceText = "categories";
-	DBConnector DBhelper = new DBConnector();
-		
-	JPanel upPanel = new JPanel();
-	JPanel midPanel = new JPanel();
-	JPanel downPanel = new JPanel();
+public class CategoryFrame extends BaseEntityFrame 
+{	
+	JLabel categoryLabel = new JLabel("Set up the Categories");
 	
-	JTable sqlTable = new JTable();
-	JScrollPane scrollPane = new JScrollPane(sqlTable);
-	
-	JButton addBtn = new JButton("Add");
-	JButton editBtn = new JButton("Update");
-	JButton delBtn = new JButton("Delete");
-	
-	JLabel categoryLabel = new JLabel("Add a Category");
-	
-	JLabel nameLabel = new JLabel("Name:");
-	
-	JTextField nameTField = new JTextField();
-	
-	public CategoryFrame() 
+	public CategoryFrame()
 	{
-		this.setVisible(false);
-		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		this.setSize(700, 400);
-		this.setLocation(450, 200);
-		this.setLayout(new GridLayout(3, 1));
-		this.setName("categories");
-
-		this.add(upPanel);
-		this.add(midPanel);
-		this.add(downPanel);
-		
-		//upPanel
-		
-		upPanel.add(categoryLabel);
-		
-		midPanel.setLayout(new GridLayout(4, 2));
-		midPanel.add(nameLabel);
-		midPanel.add(nameTField);
-		
-		scrollPane.setPreferredSize(new Dimension(350, 100));
-		DBhelper.resetTable(referenceText, sqlTable);
-		sqlTable.addMouseListener(new MouseTableAction());
-		
-		downPanel.add(addBtn);
-		downPanel.add(editBtn);
-		downPanel.add(delBtn);
-		downPanel.add(scrollPane);
-	
-		addBtn.addActionListener(new AddAction());
-		editBtn.addActionListener(new EditAction());
-		delBtn.addActionListener(new DelAction());
-		//downPanel
-	}//end constructor
-	
+			super.referenceText = "categories";
+			
+				
+			super.setConstructor();
+			setActionListeners();
+	}
 	class AddAction implements ActionListener
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
 			String name = nameTField.getText();
-			DBhelper.resetTable(referenceText, sqlTable);
-			String sql = "insert into "+ referenceText + " values (null,?);";
+			DBhelper.resetTable(getReferenceText(), sqlTable);
+			String sql = "insert into "+ getReferenceText() + " values (null,?);";
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -96,7 +35,7 @@ public class CategoryFrame extends JFrame
 				
 				state.execute();	
 				id = -1;
-				DBhelper.resetTable(referenceText, sqlTable);
+				DBhelper.resetTable(getReferenceText(), sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -115,14 +54,12 @@ public class CategoryFrame extends JFrame
 			}
 			clearForm();
 		}
-		
 	}
 	class EditAction implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			String sql = "SELECT * FROM " + referenceText;
+			String sql = "SELECT * FROM " + getReferenceText();
 			StringBuilder stringBuilder = new StringBuilder();
 			
 			conn = DBConnector.getConnection();
@@ -136,7 +73,7 @@ public class CategoryFrame extends JFrame
 			{
 				int columns = state.getMetaData().getColumnCount();
 				
-				sql = "update " + referenceText + " set ";
+				sql = "update " + getReferenceText() + " set ";
 				stringBuilder.append(sql);
 				for(int i = 2;i<=columns;i++)
 				{
@@ -164,7 +101,7 @@ public class CategoryFrame extends JFrame
 				
 				state.execute();
 				id = -1;
-				DBhelper.resetTable(referenceText, sqlTable);
+				DBhelper.resetTable(getReferenceText(), sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -181,14 +118,13 @@ public class CategoryFrame extends JFrame
 				
 			}
 		}
-		
 	}
 	class DelAction implements ActionListener
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			String sql = "delete from " + referenceText + " where id=?";
+			String sql = "delete from " + getReferenceText() + " where id=?";
 			conn = DBConnector.getConnection();
 			try 
 			{
@@ -197,7 +133,7 @@ public class CategoryFrame extends JFrame
 				state.execute();
 				
 				id = -1;
-				DBhelper.resetTable(referenceText, sqlTable);
+				DBhelper.resetTable(getReferenceText(), sqlTable);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -210,10 +146,41 @@ public class CategoryFrame extends JFrame
 					e1.printStackTrace();
 				}
 			}
-		
 	}
 }
-	
+	class FilterAction implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String sql = "Select * from " + getReferenceText() + " where name = ?";
+			
+			conn = DBConnector.getConnection();
+			try
+			{
+				String text = filterTField.getText();
+				state = conn.prepareStatement(sql);
+				state.setString(1,text);
+				state.execute();
+				
+				// DBhelper.resetTable(referenceText, sqlTable);
+			}
+			catch(SQLException e1)
+			{
+				e1.printStackTrace();
+			}
+			finally
+			{
+				try {
+					state.close();
+					conn.close();
+					clearForm();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}		
+			}
+		}	
+	}
 	class MouseTableAction implements MouseListener
 	{
 		@Override
@@ -250,10 +217,18 @@ public class CategoryFrame extends JFrame
 		}
 		
 	}
-	
-	private void clearForm() 
+	public void setActionListeners()
 	{
-		nameTField.setText("");
+		addBtn.addActionListener(new AddAction());
+		editBtn.addActionListener(new EditAction());
+		delBtn.addActionListener(new DelAction());
+		filterBtn.addActionListener(new FilterAction());
+		sqlTable.addMouseListener(new MouseTableAction());
 	}
-
-}//end class MyFrame
+	
+	@Override
+	public void setElements()
+	{
+		super.upPanel.add(categoryLabel);
+	}
+}
