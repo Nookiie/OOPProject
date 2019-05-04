@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,14 +26,15 @@ public abstract class BaseEntityFrame <T> extends JFrame
 * MY POOR ATTEMPT TO START USING GENERICS
 * THIS IS WHEN I FOUND OUT JAVA GENERICS SUCK
 * 
-* THIS CLASS IS NOT USED YET
- * MIGHT BE USED LATER IN THE FUTURE 
+* THIS CLASS IS USED AS A BASIS OF ALL ENTITY FRAMES
 */ 
 	
 	Connection conn = null;
 	PreparedStatement state = null;
 	ResultSet result = null;
 	String referenceText = "companies";
+	String tabName = null;
+	String findText = null;
 	
 	int id = -1;
 	DBConnector DBhelper = new DBConnector();
@@ -50,7 +52,11 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	JLabel nameLabel = new JLabel("Name:");
 	JTextField nameTField = new JTextField();
 	JTextField filterTField = new JTextField();
+
+	String[] tabNames = {"*", "Name"};
 	
+	JComboBox<Object> filterCombo = new JComboBox<Object>(tabNames);
+
 	JButton addBtn = new JButton("Add");
 	JButton editBtn = new JButton("Update");
 	JButton delBtn = new JButton("Delete");
@@ -99,7 +105,7 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		}
 	}
 	*/
-	
+		
 	public  void clearForm()
 	{
 		nameTField.setText("");
@@ -124,26 +130,30 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(700, 400);
 		this.setLocation(450, 200);
-		this.setLayout(new GridLayout(3, 1));
+		this.setLayout(new GridLayout(4, 1));
 
 		this.add(upPanel);
 		this.add(midPanel);
 		this.add(downPanel);
 			
-		scrollPane.setPreferredSize(new Dimension(650, 100));
-		DBhelper.resetTable(getReferenceText(), sqlTable);
+		scrollPane.setPreferredSize(new Dimension(650, 500));
+		DBhelper.refreshTable(getReferenceText(), sqlTable);
 		
 		midPanel.setLayout(new GridLayout(4, 2));
 				
 		midPanel.add(nameLabel);
 		midPanel.add(nameTField);
-			
+		// midPanel.add(filterTField);
+		downPanel.add(filterCombo);
+		downPanel.add(filterTField);
+		
+		downPanel.add(filterBtn);	
 		downPanel.add(addBtn);
 		downPanel.add(editBtn);
 		downPanel.add(delBtn);
-		downPanel.add(filterBtn);
-		downPanel.add(filterTField);
-		downPanel.add(scrollPane);	
+		downPanel.add(scrollPane);
+		
+		filterBtn.addActionListener(new FilterAction());
 
 	}
 	class AddAction implements ActionListener
@@ -178,11 +188,15 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	}
 	class FilterAction implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+
+			tabName = filterCombo.getSelectedItem().toString();
+			String findText = filterTField.getText();
 			
+			DBhelper.refreshNameTable(referenceText, sqlTable, tabName);
+			
+			// DBhelper.resetTable(referenceText, sqlTable);		
 		}
 		
 	}
@@ -217,9 +231,9 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
-		}
-		
+		}		
 	}
+	
 	public void setActionListeners()
 	{
 		addBtn.addActionListener(new AddAction());

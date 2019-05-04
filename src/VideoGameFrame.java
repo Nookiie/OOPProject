@@ -55,7 +55,7 @@ public class VideoGameFrame extends BaseEntityFrame
 				
 				state.execute();	
 				id = -1;
-				DBhelper.resetTable(referenceText, sqlTable);
+				DBhelper.refreshTable(referenceText, sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -126,7 +126,7 @@ public class VideoGameFrame extends BaseEntityFrame
 				
 				state.execute();
 				id = -1;
-				DBhelper.resetTable(referenceText, sqlTable);
+				DBhelper.refreshTable(referenceText, sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -157,7 +157,7 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.setInt(1, id);
 				state.execute();
 				id = -1;
-				DBhelper.resetTable(referenceText, sqlTable);
+				DBhelper.refreshTable(referenceText, sqlTable);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

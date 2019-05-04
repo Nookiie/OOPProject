@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JTable;
 
@@ -48,18 +49,40 @@ public class DBConnector
 		}
 		return model;
 	}
-	public void resetTable(String entity, JTable sqlTable)
+	public void refreshTable(String entity, JTable sqlTable)
 	{
 		sqlTable.setModel(DBConnector.getAllModel(entity));
+		hideIDFromModel(sqlTable);
+	}
+	
+	public void refreshNameTable(String entity, JTable sqlTable, String tabName)
+	{
+		sqlTable.setModel(DBConnector.getByTabNameModel(entity, tabName));
+		hideIDFromModel(sqlTable);
+	}
+	
+	public static Model getByTabNameModel(String entity, String tabName)
+	{
+		String sql = "select * from " + entity;
 		
-		for(int i = 0;i < sqlTable.getColumnCount();i++)
+		if(!tabName.isBlank())
 		{
-			if(sqlTable.getColumnName(i).contains("ID"))
-			{
-				sqlTable.getColumnModel().getColumn(i).setMinWidth(0);
-				sqlTable.getColumnModel().getColumn(i).setMaxWidth(0); // Hiding all IDs from the Index Table
-			}
+			sql = "select "+ tabName  +" from " + entity;
 		}
+		conn = getConnection();
+		try 
+		{
+			PreparedStatement state = conn.prepareStatement(sql);
+			state = conn.prepareStatement(sql);
+
+			result = state.executeQuery();
+			model = new Model(result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
 	}
 	/*
 	public static Model getAllExceptIDModel(String entity) // NOT USED (ORIGINAL PLAN TO HIDE ID)
@@ -101,4 +124,39 @@ public class DBConnector
 		return model;
 }
 */
+	private void hideIDFromModel(JTable sqlTable)
+	{
+		for(int i = 0;i < sqlTable.getColumnCount();i++)
+		{
+			if(sqlTable.getColumnName(i).contains("ID"))
+			{
+				sqlTable.getColumnModel().getColumn(i).setMinWidth(0);
+				sqlTable.getColumnModel().getColumn(i).setMaxWidth(0); // Hiding all IDs from the Index Table
+			}
+		}
+	}
+	public Model getSearchModel(String entity, String tabName, String findText) // STILL UNDER WORK
+	{
+		String sql = null;
+		
+		if(!tabName.isBlank() || !findText.isBlank())
+			sql = "Select " + tabName + " from " + entity + " where " + tabName + " = " + findText;
+		else
+			sql = "Select * from " + entity;
+		
+		conn = getConnection();
+		try 
+		{
+			PreparedStatement state = conn.prepareStatement(sql);
+			state = conn.prepareStatement(sql);
+
+			result = state.executeQuery();
+			model = new Model(result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
 }
