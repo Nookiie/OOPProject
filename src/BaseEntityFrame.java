@@ -53,9 +53,9 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	JTextField nameTField = new JTextField();
 	JTextField filterTField = new JTextField();
 
-	String[] tabNames = {"*", "Name"};
+	String[] tabNames = {"*"};
 	
-	JComboBox<Object> filterCombo = new JComboBox<Object>(tabNames);
+	JComboBox<String> filterCombo = new JComboBox<String>(tabNames);
 
 	JButton addBtn = new JButton("Add");
 	JButton editBtn = new JButton("Update");
@@ -143,10 +143,9 @@ public abstract class BaseEntityFrame <T> extends JFrame
 				
 		midPanel.add(nameLabel);
 		midPanel.add(nameTField);
-		// midPanel.add(filterTField);
+		
 		downPanel.add(filterCombo);
 		downPanel.add(filterTField);
-		
 		downPanel.add(filterBtn);	
 		downPanel.add(addBtn);
 		downPanel.add(editBtn);
@@ -190,11 +189,12 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			tabName = filterCombo.getSelectedItem().toString();
-			String findText = filterTField.getText();
-			
+
 			DBhelper.refreshNameTable(referenceText, sqlTable, tabName);
+			
+			// findText = filterTField.getText();
+			// search(findText,tabName);
 			
 			// DBhelper.resetTable(referenceText, sqlTable);		
 		}
@@ -246,5 +246,48 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	public void setElements()
 	{
 		
+	}
+	
+	public void setFilter() 
+	{
+		for(int i = 1;i<sqlTable.getColumnCount();i++)
+		{	
+			filterCombo.insertItemAt(sqlTable.getColumnName(i),i );
+		}
+	}
+	
+	public void search(String findText,String tabName) // UNFINISHED
+	{
+		String sql = null;
+		
+		if(!tabName.isBlank() || tabName.equals("*"))
+			 sql = "Select " +tabName + " from " + referenceText + " where " + tabName + " = ?";
+		else
+			sql = "Select * from " + referenceText;
+		
+		conn = DBConnector.getConnection();
+		try 
+		{
+			state = conn.prepareStatement(sql);
+			state.setString(1, findText);
+			
+			state.execute();	
+			DBhelper.refreshQueryTable(referenceText, sqlTable, tabName, sql);
+		} 
+		catch (SQLException e1) 
+		{
+			e1.printStackTrace();
+		}
+		finally 
+		{
+			try 
+			{
+				state.close();
+				conn.close();
+			} catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
+		}
 	}
 }

@@ -17,11 +17,11 @@ public class CompanyFrame extends BaseEntityFrame
 	public CompanyFrame()
 	{
 			super.referenceText = "companies";
-			
+		
 			super.setConstructor();
 			setActionListeners();
 			setElements();
-
+			setFilter();
 	}
 	class AddAction implements ActionListener
 	{

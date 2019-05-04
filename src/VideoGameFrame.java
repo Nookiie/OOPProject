@@ -28,9 +28,12 @@ public class VideoGameFrame extends BaseEntityFrame
 	{
 			super.referenceText = "videogames";
 			
+				
+			
 			super.setConstructor();
 			setActionListeners();
 			setElements();
+			setFilter();
 	}
 	class AddAction implements ActionListener
 	{
@@ -209,7 +212,6 @@ public class VideoGameFrame extends BaseEntityFrame
 			// TODO Auto-generated method stub
 			
 		}
-		
 	}
 	public void setActionListeners()
 	{

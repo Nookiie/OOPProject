@@ -61,6 +61,12 @@ public class DBConnector
 		hideIDFromModel(sqlTable);
 	}
 	
+	public void refreshQueryTable(String entity,JTable sqlTable, String tabName,String sql)
+	{
+		sqlTable.setModel(DBConnector.getBySearchQueryModel(entity, tabName, sql));
+		hideIDFromModel(sqlTable);
+	}
+	
 	public static Model getByTabNameModel(String entity, String tabName)
 	{
 		String sql = "select * from " + entity;
@@ -84,8 +90,28 @@ public class DBConnector
 		}
 		return model;
 	}
+	
+	public static Model getBySearchQueryModel(String entity, String tabName, String sql)
+	{
+		conn = getConnection();
+		try 
+		{
+			PreparedStatement state = conn.prepareStatement(sql);
+			state = conn.prepareStatement(sql);
+			state.setString(1,"Name");
+			
+			result = state.executeQuery();
+			model = new Model(result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
 	/*
-	public static Model getAllExceptIDModel(String entity) // NOT USED (ORIGINAL PLAN TO HIDE ID)
+	
+public static Model getAllExceptIDModel(String entity) // NOT USED (ORIGINAL PLAN TO HIDE ID)
 	{
 		String sql = "select ";
 		StringBuilder stringBuilder = new StringBuilder();
