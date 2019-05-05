@@ -98,7 +98,6 @@ public class DBConnector
 		{
 			PreparedStatement state = conn.prepareStatement(sql);
 			state = conn.prepareStatement(sql);
-			state.setString(1,"Name");
 			
 			result = state.executeQuery();
 			model = new Model(result);

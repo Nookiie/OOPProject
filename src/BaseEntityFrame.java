@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +27,7 @@ public abstract class BaseEntityFrame <T> extends JFrame
 * MY POOR ATTEMPT TO START USING GENERICS
 * THIS IS WHEN I FOUND OUT JAVA GENERICS SUCK
 * 
-* THIS CLASS IS USED AS A BASIS OF ALL ENTITY FRAMES
+* THIS CLASS IS USED AS A BASIS FOR ALL ENTITY FRAMES
 */ 
 	
 	Connection conn = null;
@@ -144,8 +145,9 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		midPanel.add(nameLabel);
 		midPanel.add(nameTField);
 		
-		downPanel.add(filterCombo);
+		filterTField.setColumns(12);
 		downPanel.add(filterTField);
+		downPanel.add(filterCombo);
 		downPanel.add(filterBtn);	
 		downPanel.add(addBtn);
 		downPanel.add(editBtn);
@@ -193,9 +195,10 @@ public abstract class BaseEntityFrame <T> extends JFrame
 
 			DBhelper.refreshNameTable(referenceText, sqlTable, tabName);
 			
-			// findText = filterTField.getText();
-			// search(findText,tabName);
-			
+			 findText = filterTField.getText();
+			 
+			 if(!findText.isBlank()) 
+			 		search(findText,tabName);
 			// DBhelper.resetTable(referenceText, sqlTable);		
 		}
 		
@@ -256,22 +259,38 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		}
 	}
 	
-	public void search(String findText,String tabName) // UNFINISHED
+	public void search(String findText,String tabName) 
 	{
 		String sql = null;
 		
-		if(!tabName.isBlank() || tabName.equals("*"))
-			 sql = "Select " +tabName + " from " + referenceText + " where " + tabName + " = ?";
+		if(!findText.isBlank() && tabName.equals("*") && !tabName.isBlank())
+		{
+			int columns = sqlTable.getColumnCount();
+			StringBuilder sb = new StringBuilder();
+			String currentTab = null;
+			sql = "Select " +tabName + " from " + referenceText + " where ";
+			sb.append(sql);
+			for(int i = 1;i<columns;i++)
+			{
+				currentTab = sqlTable.getColumnName(i);
+				sb.append(currentTab + " = " + "'" + findText + "'" + " OR ");
+				if(i == columns - 1)
+				{
+					sb.delete(sb.length() - 3, sb.length());
+				}
+			}
+			sql = sb.toString();
+		}
 		else
-			sql = "Select * from " + referenceText;
-		
+		{
+			sql = "Select " +tabName + " from " + referenceText + " where " +tabName + " = " + "'" + findText + "'";
+		}
 		conn = DBConnector.getConnection();
 		try 
 		{
 			state = conn.prepareStatement(sql);
-			state.setString(1, findText);
-			
 			state.execute();	
+			
 			DBhelper.refreshQueryTable(referenceText, sqlTable, tabName, sql);
 		} 
 		catch (SQLException e1) 

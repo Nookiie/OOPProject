@@ -14,9 +14,9 @@ public class CategoryFrame extends BaseEntityFrame
 	{
 			super.referenceText = "categories";
 			
-			
 			super.setConstructor();
 			setActionListeners();
+			setElements();
 			setFilter();
 	}
 	class AddAction implements ActionListener
