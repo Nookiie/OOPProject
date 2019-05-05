@@ -17,23 +17,21 @@ public class VideoGameFrame extends BaseEntityFrame
 
 	JTextField descriptionTField = new JTextField();
 	
-	 String[] companies = {"","Company"}; // Argument needs to be list of companies
-	 String[] categories = {"","Category"}; // Argument needs to be list of categories
+	 String[] companies = {" ", "Companies"}; // Default values
+	 String[] categories = {" ", "Categories"};  
 	 
-	JComboBox<Object> categoryCombo = new JComboBox<Object>(companies);
-	JComboBox<Object> companyCombo = new JComboBox<Object>(categories);
-	
+	JComboBox<String> categoryCombo = new JComboBox<String>(categories);
+	JComboBox<String> companyCombo = new JComboBox<String>(companies);
 	
 	public VideoGameFrame()
 	{
 			super.referenceText = "videogames";
 			
-				
-			
 			super.setConstructor();
 			setActionListeners();
 			setElements();
 			setFilter();
+			// getNameKeys();
 	}
 	class AddAction implements ActionListener
 	{
@@ -232,5 +230,17 @@ public class VideoGameFrame extends BaseEntityFrame
 		super.midPanel.add(companyCombo);
 		super.midPanel.add(categoryLabel);
 		super.midPanel.add(categoryCombo);
+	
+	}
+	public void getNameKeys()
+	{
+		 companies = getEntitiesFromProperty("companies", "name",sqlTable); // Argument needs to be list of companies
+		 categories = getEntitiesFromProperty("categories", "name",sqlTable); // Argument needs to be list of categories
+		 		 
+		 categoryCombo.removeAll();
+		 categoryCombo.addItem(categories[2]);
+		 
+		 companyCombo.removeAll();
+		 companyCombo.addItem(categories[2]);
 	}
 }

@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,6 +34,7 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	
 	Connection conn = null;
 	PreparedStatement state = null;
+	Statement stateNormal = null;
 	ResultSet result = null;
 	String referenceText = "companies";
 	String tabName = null;
@@ -308,5 +311,44 @@ public abstract class BaseEntityFrame <T> extends JFrame
 				e1.printStackTrace();
 			}
 		}
+	}
+	public String[] getEntitiesFromProperty(String entity, String property,JTable sqlTable)
+	{
+		String sql = "Select " + property + " from " + entity;
+		String[] names = null;
+		int rows = sqlTable.getRowCount();
+		
+		conn = DBConnector.getConnection();
+		try 
+		{
+			stateNormal = conn.createStatement();
+			result = stateNormal.executeQuery(sql);
+			// DBhelper.refreshQueryTable(referenceText, sqlTable, property, sql);
+		} 
+		catch (SQLException e1) 
+		{
+			e1.printStackTrace();
+		}
+		finally 
+		{
+			try 
+			{
+				stateNormal.close();
+				conn.close();
+			} catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
+		}
+		for(int i =2;i<rows;i++)
+		{
+			try {
+				names[i] = result.getString(property);
+				System.out.println(result.getString(property));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return names;
 	}
 }
