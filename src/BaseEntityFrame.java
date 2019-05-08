@@ -200,7 +200,7 @@ public abstract class BaseEntityFrame <T> extends JFrame
 			
 			 findText = filterTField.getText();
 			 
-			 if(!findText.isBlank()) 
+			 if(!findText.isEmpty() && !findText.equals(" ")) 
 			 		search(findText,tabName);
 			// DBhelper.resetTable(referenceText, sqlTable);		
 		}
@@ -266,7 +266,7 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	{
 		String sql = null;
 		
-		if(!findText.isBlank() && tabName.equals("*") && !tabName.isBlank())
+		if(!findText.isEmpty() && !findText.equals(" ") && tabName.equals("*") && !tabName.isEmpty())
 		{
 			int columns = sqlTable.getColumnCount();
 			StringBuilder sb = new StringBuilder();

@@ -71,7 +71,7 @@ public class DBConnector
 	{
 		String sql = "select * from " + entity;
 		
-		if(!tabName.isBlank())
+		if(!tabName.isEmpty() && !tabName.equals(" "))
 		{
 			sql = "select "+ tabName  +" from " + entity;
 		}
@@ -164,7 +164,7 @@ public static Model getAllExceptIDModel(String entity) // NOT USED (ORIGINAL PLA
 	{
 		String sql = null;
 		
-		if(!tabName.isBlank() || !findText.isBlank())
+		if(!tabName.isEmpty() || !findText.isEmpty() || !findText.equals(" "))
 			sql = "Select " + tabName + " from " + entity + " where " + tabName + " = " + findText;
 		else
 			sql = "Select * from " + entity;
