@@ -17,8 +17,8 @@ public class VideoGameFrame extends BaseEntityFrame
 
 	JTextField descriptionTField = new JTextField();
 	
-	 Object[] companies = {" "};  // Default values
-	 Object[] categories = {" "};  
+	Object[] companies = new Object[20];  // Default values
+	Object[] categories = new Object[20];  
 	 
 	JComboBox<Object> categoryCombo = new JComboBox<Object>(categories);
 	JComboBox<Object> companyCombo = new JComboBox<Object>(companies);
@@ -178,7 +178,6 @@ public class VideoGameFrame extends BaseEntityFrame
 }
 	class MouseTableAction implements MouseListener
 	{
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int row = sqlTable.getSelectedRow();
@@ -240,16 +239,19 @@ public class VideoGameFrame extends BaseEntityFrame
 		 int companiesLength = DBConnector.getEntitiesFromProperty("companies", "name", sqlTable).length;
 		 int categoriesLength = DBConnector.getEntitiesFromProperty("categories", "name", sqlTable).length;
 		 
-		 System.out.println(categoriesLength);
-		 System.out.println(companiesLength);
+		  System.out.println(categoriesLength);
+		  System.out.println(companiesLength);
 		 
+		  categoryCombo.removeAllItems(); // Removing the Set of Blank Object Items before changing them
+		  companyCombo.removeAllItems();
+		  
 		 for(int i = 0;i<companiesLength;i++)
 		 {
 			 companies[i] = DBConnector.getEntitiesFromProperty("companies", "name", sqlTable)[i];
 			 companyCombo.addItem(companies[i]);
 		 }
 		 
-		 for(int i = 0;i<companiesLength;i++)
+		 for(int i = 0;i<categoriesLength;i++)
 		 {
 			  categories[i] = DBConnector.getEntitiesFromProperty("categories", "name", sqlTable)[i];
 			  categoryCombo.addItem(categories[i]);

@@ -178,15 +178,18 @@ public class DBConnector
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		try {
-			state.close();
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		finally
+		{
+			try {
+				state.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		// System.out.println(rows);
 		names = namesString.toArray();
+		namesString.clear();
 		return names;
 	}
 }
