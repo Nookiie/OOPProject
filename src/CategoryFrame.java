@@ -25,8 +25,12 @@ public class CategoryFrame extends BaseEntityFrame
 		public void actionPerformed(ActionEvent e) 
 		{
 			String name = nameTField.getText();
-			DBhelper.refreshTable(getReferenceText(), sqlTable);
-			String sql = "insert into "+ getReferenceText() + " values (null,?);";
+			
+			if(name.equals(" ") || name.isEmpty())
+				return;
+			
+			DBhelper.refreshTable(referenceText, sqlTable);
+			String sql = "insert into "+ referenceText + " values (null,?);";
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -36,7 +40,7 @@ public class CategoryFrame extends BaseEntityFrame
 				
 				state.execute();	
 				id = -1;
-				DBhelper.refreshTable(getReferenceText(), sqlTable);
+				DBhelper.refreshTable(referenceText, sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -60,7 +64,7 @@ public class CategoryFrame extends BaseEntityFrame
 	{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			String sql = "SELECT * FROM " + getReferenceText();
+			String sql = "SELECT * FROM " + referenceText;
 			StringBuilder stringBuilder = new StringBuilder();
 			
 			conn = DBConnector.getConnection();
@@ -74,13 +78,11 @@ public class CategoryFrame extends BaseEntityFrame
 			{
 				int columns = state.getMetaData().getColumnCount();
 				
-				sql = "update " + getReferenceText() + " set ";
+				sql = "update " + referenceText + " set ";
 				stringBuilder.append(sql);
 				for(int i = 2;i<=columns;i++)
 				{
-					
-					stringBuilder.append(state.getMetaData().getColumnName(i) + " = ?, ");
-					
+					stringBuilder.append(state.getMetaData().getColumnName(i) + " = ?, ");	
 					if(i == columns)
 						stringBuilder.deleteCharAt(stringBuilder.length() - 2); // Removing the comma on the last SET query before when
 				}
@@ -102,7 +104,7 @@ public class CategoryFrame extends BaseEntityFrame
 				
 				state.execute();
 				id = -1;
-				DBhelper.refreshTable(getReferenceText(), sqlTable);
+				DBhelper.refreshTable(referenceText, sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -125,7 +127,7 @@ public class CategoryFrame extends BaseEntityFrame
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			String sql = "delete from " + getReferenceText() + " where id=?";
+			String sql = "delete from " + referenceText + " where id=?";
 			conn = DBConnector.getConnection();
 			try 
 			{
@@ -134,7 +136,7 @@ public class CategoryFrame extends BaseEntityFrame
 				state.execute();
 				
 				id = -1;
-				DBhelper.refreshTable(getReferenceText(), sqlTable);
+				DBhelper.refreshTable(referenceText, sqlTable);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -153,7 +155,7 @@ public class CategoryFrame extends BaseEntityFrame
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String sql = "Select * from " + getReferenceText() + " where name = ?";
+			String sql = "Select * from " + referenceText + " where name = ?";
 			
 			conn = DBConnector.getConnection();
 			try

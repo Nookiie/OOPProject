@@ -17,11 +17,11 @@ public class VideoGameFrame extends BaseEntityFrame
 
 	JTextField descriptionTField = new JTextField();
 	
-	 String[] companies = {" ", "Companies"}; // Default values
-	 String[] categories = {" ", "Categories"};  
+	 Object[] companies = {" "};  // Default values
+	 Object[] categories = {" "};  
 	 
-	JComboBox<String> categoryCombo = new JComboBox<String>(categories);
-	JComboBox<String> companyCombo = new JComboBox<String>(companies);
+	JComboBox<Object> categoryCombo = new JComboBox<Object>(categories);
+	JComboBox<Object> companyCombo = new JComboBox<Object>(companies);
 	
 	public VideoGameFrame()
 	{
@@ -31,7 +31,7 @@ public class VideoGameFrame extends BaseEntityFrame
 			setActionListeners();
 			setElements();
 			setFilter();
-			// getNameKeys();
+			getNameKeys();
 	}
 	class AddAction implements ActionListener
 	{
@@ -44,6 +44,9 @@ public class VideoGameFrame extends BaseEntityFrame
 			String company = companyCombo.getSelectedItem().toString();
 			String category = categoryCombo.getSelectedItem().toString();
 			String sql = "insert into videogames values (null,?,?,?,?);"; // Needs to be reworked with Foreign Keys
+			
+			if(name.equals(" ") || name.isEmpty() || description.isEmpty() || company.isEmpty() || category.isEmpty())
+				return;
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -234,13 +237,23 @@ public class VideoGameFrame extends BaseEntityFrame
 	}
 	public void getNameKeys()
 	{
-		 companies = getEntitiesFromProperty("companies", "name",sqlTable); // Argument needs to be list of companies
-		 categories = getEntitiesFromProperty("categories", "name",sqlTable); // Argument needs to be list of categories
-		 		 
-		 categoryCombo.removeAll();
-		 categoryCombo.addItem(categories[2]);
+		 int companiesLength = DBConnector.getEntitiesFromProperty("companies", "name", sqlTable).length;
+		 int categoriesLength = DBConnector.getEntitiesFromProperty("categories", "name", sqlTable).length;
 		 
-		 companyCombo.removeAll();
-		 companyCombo.addItem(categories[2]);
+		 System.out.println(categoriesLength);
+		 System.out.println(companiesLength);
+		 
+		 for(int i = 0;i<companiesLength;i++)
+		 {
+			 companies[i] = DBConnector.getEntitiesFromProperty("companies", "name", sqlTable)[i];
+			 companyCombo.addItem(companies[i]);
+		 }
+		 
+		 for(int i = 0;i<companiesLength;i++)
+		 {
+			  categories[i] = DBConnector.getEntitiesFromProperty("categories", "name", sqlTable)[i];
+			  categoryCombo.addItem(categories[i]);
+		 }
+		  
 	}
 }

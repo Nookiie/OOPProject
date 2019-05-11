@@ -33,6 +33,9 @@ public class CompanyFrame extends BaseEntityFrame
 
 			String sql = "insert into " + referenceText + " values (null,?,?);";
 			
+			if(name.equals(" ") || name.isEmpty() || description.equals(" ") || description.isEmpty())
+				return;
+			
 			conn = DBConnector.getConnection();
 			try 
 			{
