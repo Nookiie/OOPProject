@@ -219,10 +219,8 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	{
 		for(int i = 1;i<sqlTable.getColumnCount();i++)
 		{	
-			if(sqlTable.getColumnName(i).contains("ID")) // Filtering against IDs
-				continue;
-			
-			filterCombo.insertItemAt(sqlTable.getColumnName(i) , i );
+			if(!sqlTable.getColumnName(i).contains("ID")) // Filtering against ID
+				filterCombo.insertItemAt(sqlTable.getColumnName(i) , i );
 		}
 	}
 	
