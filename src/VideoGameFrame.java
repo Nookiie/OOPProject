@@ -3,6 +3,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -17,8 +18,8 @@ public class VideoGameFrame extends BaseEntityFrame
 
 	JTextField descriptionTField = new JTextField();
 	
-	Object[] companies = new Object[20];  // Default values
-	Object[] categories = new Object[20];  
+	Object[] companies = new Object[20];
+	Object[] categories = new Object[20];
 	 
 	JComboBox<Object> categoryCombo = new JComboBox<Object>(categories);
 	JComboBox<Object> companyCombo = new JComboBox<Object>(companies);
@@ -185,8 +186,9 @@ public class VideoGameFrame extends BaseEntityFrame
 			if(e.getClickCount() == 1) {
 				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
 				descriptionTField.setText(sqlTable.getValueAt(row, 2).toString());
+				// companyCombo.setSelectedItem(sqlTable.getValueAt(row, 3));
+				// categoryCombo.setSelectedItem(sqlTable.getValueAt(row, 4));
 			}
-			
 		}
 
 		@Override
@@ -244,6 +246,9 @@ public class VideoGameFrame extends BaseEntityFrame
 		 
 		  categoryCombo.removeAllItems(); // Removing the Set of Blank Object Items before changing them
 		  companyCombo.removeAllItems();
+		  
+		  categoryCombo.addItem(" ");
+		  companyCombo.addItem(" ");
 		  
 		 for(int i = 0;i<companiesLength;i++)
 		 {

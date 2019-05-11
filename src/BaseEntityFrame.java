@@ -70,45 +70,6 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	{
 		setConstructor();
 	}
-	/*
-	class AddAction implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e) 
-		{
-			String name = nameTField.getText();
-			DBhelper.resetTable(getReferenceText(), sqlTable);
-			String sql = "insert into "+ getReferenceText() + " values (null,?);";
-			
-			conn = DBConnector.getConnection();
-			try 
-			{
-				state = conn.prepareStatement(sql);
-				state.setString(1, name);
-				
-				state.execute();	
-				id = -1;
-				DBhelper.resetTable(getReferenceText(), sqlTable);
-			} 
-			catch (SQLException e1) 
-			{
-				e1.printStackTrace();
-			}
-			finally 
-			{
-				try 
-				{
-					state.close();
-					conn.close();
-				} catch (SQLException e1) 
-				{
-					e1.printStackTrace();
-				}
-			}
-			clearForm();
-		}
-	}
-	*/
 		
 	public  void clearForm()
 	{
@@ -134,17 +95,17 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(700, 400);
 		this.setLocation(450, 200);
-		this.setLayout(new GridLayout(4, 1));
+		this.setLayout(new GridLayout(3, 2));
 
 		this.add(upPanel);
 		this.add(midPanel);
 		this.add(downPanel);
 			
-		scrollPane.setPreferredSize(new Dimension(650, 500));
-		DBhelper.refreshTable(getReferenceText(), sqlTable);
+		scrollPane.setPreferredSize(new Dimension(650, 75));
+		DBhelper.refreshTable(referenceText, sqlTable);
 		
-		midPanel.setLayout(new GridLayout(4, 2));
-				
+		midPanel.setLayout(new GridLayout(4,2));
+		
 		midPanel.add(nameLabel);
 		midPanel.add(nameTField);
 		
