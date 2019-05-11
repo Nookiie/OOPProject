@@ -44,6 +44,7 @@ public class CompanyFrame extends BaseEntityFrame
 				state.setString(2, description);
 				
 				state.execute();	
+				DBhelper.refreshTable(referenceText, sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
