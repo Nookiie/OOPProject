@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 public class DBConnector 
 {	
@@ -66,6 +67,12 @@ public class DBConnector
 	public void refreshQueryTable(String entity,JTable sqlTable, String tabName,String sql)
 	{
 		sqlTable.setModel(DBConnector.getBySearchQueryModel(entity, tabName, sql));
+		hideIDFromModel(sqlTable);
+	}
+	
+	public void refreshForeignKeyTable(String entity, String property, String[] foreignEntities, String[] foreignReferences, JTable sqlTable)
+	{
+		sqlTable.setModel(DBConnector.getForeignKeyModel(entity, property,foreignEntities, foreignReferences));
 		hideIDFromModel(sqlTable);
 	}
 	
@@ -145,7 +152,55 @@ public class DBConnector
 		}
 		return model;
 	}
-	public static Object[] getEntitiesFromProperty(String entity, String property,JTable sqlTable)
+	
+	public static Model getForeignKeyModel(String entity, String property, String[] foreignEntities, String[] foreignReferences) 
+	{
+		StringBuilder sb = new StringBuilder();
+		String sql = "Select " + entity +"." + property + ", ";
+		
+		sb.append(sql);
+		for(int i = 0;i<foreignEntities.length;i++)
+		{
+			sb.append(foreignEntities[i] + "." + property + " AS " + foreignEntities[i]+ ", ");
+			
+			if(i == foreignEntities.length - 1)
+				sb.deleteCharAt(sb.length() - 2);
+		}
+		sb.append(" from " + entity);
+		
+		for(int i = 0;i<foreignEntities.length;i++)
+		{
+			sb.append(" join " + foreignEntities[i]);
+		}
+		sb.append(" where ");
+		for(int i = 0;i<foreignEntities.length;i++)
+		{
+			sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID" + " AND ");
+			
+			if(i == foreignEntities.length - 1)
+				sb.delete(sb.length() - 4, sb.length());
+		}
+		sql = sb.toString();
+		
+		conn = getConnection();
+		try 
+		{
+			PreparedStatement state = conn.prepareStatement(sql);
+			state = conn.prepareStatement(sql);
+
+			result = state.executeQuery();
+			model = new Model(result);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(sql);
+		return model;
+	}
+	
+	public static Object[] getDataFromProperty(String entity, String property,JTable sqlTable)
 	{
 		String sql = "Select " + property + " from " + entity;
 		
@@ -194,7 +249,7 @@ public class DBConnector
 	public static String getDataFromEntity(String entity, String selectProperty, String property, String data)
 	{
 		String sql = "select " + selectProperty + " from " +entity + " where " + property + " = " +"'" + data + "'";
-		String output = " ";
+		String output = "0";
 		
 		conn = DBConnector.getConnection();
 		try 
@@ -226,4 +281,27 @@ public class DBConnector
 		
 		return output.toString();
 	}
+	
+	public void setAdditionalColumns(String entity, String property, String[] foreignEntities, String[] foreignReferences, JTable sqlTable)
+	{
+		String sql = "Select * from " + entity;
+		
+		TableColumn companyColumn = new TableColumn(1);
+		TableColumn categoryColumn = new TableColumn(1);	
+		
+		model = getForeignKeyModel(entity, property, foreignEntities, foreignReferences);
+		
+		for(int i = 0;i<model.getColumnCount();i++)
+		{
+			sqlTable.setValueAt(model.getValueAt(i, 2) , i, 3);
+			sqlTable.setValueAt(model.getValueAt(i,3), i, 4);
+		}
+		companyColumn.setHeaderValue("COMPANY");
+		categoryColumn.setHeaderValue("CATEGORY");
+		
+		sqlTable.addColumn(companyColumn);
+		sqlTable.addColumn(categoryColumn);
+		
+	}
+	
 }

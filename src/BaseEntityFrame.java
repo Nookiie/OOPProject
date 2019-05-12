@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 
 import Entities.BaseEntity;
 
@@ -223,6 +225,13 @@ public abstract class BaseEntityFrame <T> extends JFrame
 				filterCombo.insertItemAt(sqlTable.getColumnName(i) , i );
 		}
 	}
+	public void setForeignFilter()
+	{
+		String[] foreignReferences = {"company", "category"};
+		String[] foreignEntities = {"companies", "categories"};
+		
+		DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
+	}
 	
 	public void search(String findText,String tabName) 
 	{
@@ -303,4 +312,5 @@ public abstract class BaseEntityFrame <T> extends JFrame
 			}
 		}
 	}
+
 }

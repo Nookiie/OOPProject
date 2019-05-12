@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumn;
 
 public class VideoGameFrame extends BaseEntityFrame
 {	
@@ -32,7 +33,9 @@ public class VideoGameFrame extends BaseEntityFrame
 			setActionListeners();
 			setElements();
 			setFilter();
-			getNameKeys();
+			// setForeignFilter();
+			getComboList();
+			// DBhelper.set
 	}
 	class AddAction implements ActionListener
 	{
@@ -123,14 +126,20 @@ public class VideoGameFrame extends BaseEntityFrame
 			String name = nameTField.getText();
 			String description = descriptionTField.getText();
 			
+			String company = companyCombo.getSelectedItem().toString();
+			String category = categoryCombo.getSelectedItem().toString();
+			
+			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "name", company));
+			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "name", category));
+			
 			conn = DBConnector.getConnection();
 			try
 			{
 				state = conn.prepareStatement(sql);
 				state.setString(1,name);
 				state.setString(2,description);
-				// state.setInt(3,fk_company_id);
-				// state.setInt(4,fk_category_id);
+				state.setInt(3,companyID);
+				state.setInt(4,categoryID);
 				
 				state.execute();
 				id = -1;
@@ -189,8 +198,18 @@ public class VideoGameFrame extends BaseEntityFrame
 			if(e.getClickCount() == 1) {
 				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
 				descriptionTField.setText(sqlTable.getValueAt(row, 2).toString());
-				// companyCombo.setSelectedItem(sqlTable.getValueAt(row, 3));
-				// categoryCombo.setSelectedItem(sqlTable.getValueAt(row, 4));
+				
+				if(!sqlTable.getValueAt(row,3).toString().isEmpty() && !sqlTable.getValueAt(row, 4).toString().isEmpty()) // Setting up the ComboBox implementation
+				{
+					String companyID = sqlTable.getValueAt(row, 3).toString();
+					String categoryID = sqlTable.getValueAt(row,4).toString();
+					
+					String company = DBConnector.getDataFromEntity("companies","name", "ID", companyID);
+					String category = DBConnector.getDataFromEntity("categories","name", "ID", categoryID);
+					
+					companyCombo.setSelectedItem(company);
+					categoryCombo.setSelectedItem(category);					
+				}
 			}
 		}
 
@@ -239,10 +258,10 @@ public class VideoGameFrame extends BaseEntityFrame
 		super.midPanel.add(categoryCombo);
 	
 	}
-	public void getNameKeys()
+	public void getComboList()
 	{
-		 int companiesLength = DBConnector.getEntitiesFromProperty("companies", "name", sqlTable).length;
-		 int categoriesLength = DBConnector.getEntitiesFromProperty("categories", "name", sqlTable).length;
+		 int companiesLength = DBConnector.getDataFromProperty("companies", "name", sqlTable).length;
+		 int categoriesLength = DBConnector.getDataFromProperty("categories", "name", sqlTable).length;
 		 
 		  System.out.println(categoriesLength);
 		  System.out.println(companiesLength);
@@ -255,13 +274,13 @@ public class VideoGameFrame extends BaseEntityFrame
 		  
 		 for(int i = 0;i<companiesLength;i++)
 		 {
-			 companies[i] = DBConnector.getEntitiesFromProperty("companies", "name", sqlTable)[i];
+			 companies[i] = DBConnector.getDataFromProperty("companies", "name", sqlTable)[i];
 			 companyCombo.addItem(companies[i]);
 		 }
 		 
 		 for(int i = 0;i<categoriesLength;i++)
 		 {
-			  categories[i] = DBConnector.getEntitiesFromProperty("categories", "name", sqlTable)[i];
+			  categories[i] = DBConnector.getDataFromProperty("categories", "name", sqlTable)[i];
 			  categoryCombo.addItem(categories[i]);
 		 }	  
 	}
