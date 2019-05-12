@@ -169,7 +169,6 @@ public class DBConnector
 			{
 				try {
 					namesString.add(result.getString(property));
-					 System.out.println(result.getString(property));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -191,5 +190,40 @@ public class DBConnector
 		names = namesString.toArray();
 		namesString.clear();
 		return names;
+	}
+	public static String getDataFromEntity(String entity, String selectProperty, String property, String data)
+	{
+		String sql = "select " + selectProperty + " from " +entity + " where " + property + " = " +"'" + data + "'";
+		String output = " ";
+		
+		conn = DBConnector.getConnection();
+		try 
+		{
+			state = conn.prepareStatement(sql);
+			result = state.executeQuery();
+			
+			while(result.next())
+			{
+				output = result.getString(selectProperty);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				state.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println(output);
+		System.out.println(sql);
+		
+		return output.toString();
 	}
 }

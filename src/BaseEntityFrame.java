@@ -274,5 +274,33 @@ public abstract class BaseEntityFrame <T> extends JFrame
 				e1.printStackTrace();
 			}
 		}
-	}	
+	}
+	public void getForeignKeys(String entityOne, String entityTwo)
+	{
+		String sql = "Select * from" + entityOne + " join " + entityTwo + " where " + entityOne + "." + entityTwo + "_ID = " + entityTwo + ".ID";
+		
+		conn = DBConnector.getConnection();
+		try 
+		{
+			state = conn.prepareStatement(sql);
+			
+			state.execute();	
+			id = -1;
+			DBhelper.refreshTable(referenceText, sqlTable);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				state.close();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }

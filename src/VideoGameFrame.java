@@ -44,6 +44,10 @@ public class VideoGameFrame extends BaseEntityFrame
 
 			String company = companyCombo.getSelectedItem().toString();
 			String category = categoryCombo.getSelectedItem().toString();
+
+			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "name", company));
+			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "name", category));
+			
 			String sql = "insert into videogames values (null,?,?,?,?);"; // Needs to be reworked with Foreign Keys
 			
 			if(name.equals(" ") || name.isEmpty() || description.isEmpty() || company.isEmpty() || category.isEmpty())
@@ -55,8 +59,8 @@ public class VideoGameFrame extends BaseEntityFrame
 				state = conn.prepareStatement(sql);
 				state.setString(1, name);
 				state.setString(2, description);
-				 state.setString(3, category);
-				 state.setString(4, company);
+				state.setInt(3, companyID);
+				state.setInt(4, categoryID);
 				
 				state.execute();	
 				id = -1;
@@ -79,7 +83,6 @@ public class VideoGameFrame extends BaseEntityFrame
 			}
 			clearForm();
 		}
-		
 	}
 	class EditAction implements ActionListener
 	{
@@ -260,7 +263,6 @@ public class VideoGameFrame extends BaseEntityFrame
 		 {
 			  categories[i] = DBConnector.getEntitiesFromProperty("categories", "name", sqlTable)[i];
 			  categoryCombo.addItem(categories[i]);
-		 }
-		  
+		 }	  
 	}
 }
