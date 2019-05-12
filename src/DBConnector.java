@@ -73,7 +73,25 @@ public class DBConnector
 	public void refreshForeignKeyTable(String entity, String property, String[] foreignEntities, String[] foreignReferences, JTable sqlTable)
 	{
 		sqlTable.setModel(DBConnector.getForeignKeyModel(entity, property,foreignEntities, foreignReferences));
-		hideIDFromModel(sqlTable);
+		 renameForeignColumns(foreignReferences, sqlTable);
+		 hideIDFromModel(sqlTable);
+	}
+	
+	public void renameForeignColumns(String[] foreignReferences, JTable sqlTable)
+	{
+		int columns = sqlTable.getColumnCount();
+		
+		for(int i = 1;i<=foreignReferences.length;i++)
+		{
+			sqlTable.removeColumn(sqlTable.getColumnModel().getColumn(columns - i));
+		}
+		for(int i = 0;i<foreignReferences.length;i++)
+		{
+			TableColumn column = new TableColumn(i + columns - foreignReferences.length);
+			column.setHeaderValue(foreignReferences[i]);
+			
+			sqlTable.addColumn(column);
+		}
 	}
 	
 	public static Model getByTabNameModel(String entity, String tabName)
@@ -156,7 +174,7 @@ public class DBConnector
 	public static Model getForeignKeyModel(String entity, String property, String[] foreignEntities, String[] foreignReferences) 
 	{
 		StringBuilder sb = new StringBuilder();
-		String sql = "Select " + entity +"." + property + ", ";
+		String sql = "Select " + entity +".ID, " + entity +"." + property + ", " + entity + ".description, ";
 		
 		sb.append(sql);
 		for(int i = 0;i<foreignEntities.length;i++)
@@ -291,17 +309,21 @@ public class DBConnector
 		
 		model = getForeignKeyModel(entity, property, foreignEntities, foreignReferences);
 		
+		/*
 		for(int i = 0;i<model.getColumnCount();i++)
 		{
 			sqlTable.setValueAt(model.getValueAt(i, 2) , i, 3);
 			sqlTable.setValueAt(model.getValueAt(i,3), i, 4);
 		}
+		*/
+		
 		companyColumn.setHeaderValue("COMPANY");
 		categoryColumn.setHeaderValue("CATEGORY");
 		
 		sqlTable.addColumn(companyColumn);
-		sqlTable.addColumn(categoryColumn);
-		
+		sqlTable.addColumn(categoryColumn);	
 	}
+	
+
 	
 }

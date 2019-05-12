@@ -30,12 +30,13 @@ public class VideoGameFrame extends BaseEntityFrame
 			super.referenceText = "videogames";
 			
 			super.setConstructor();
+			
+			setForeignFilter();
+			getComboList();
 			setActionListeners();
 			setElements();
-			setFilter();
-			// setForeignFilter();
-			getComboList();
-			// DBhelper.set
+			setComboFilter();	
+			
 	}
 	class AddAction implements ActionListener
 	{
@@ -201,14 +202,11 @@ public class VideoGameFrame extends BaseEntityFrame
 				
 				if(!sqlTable.getValueAt(row,3).toString().isEmpty() && !sqlTable.getValueAt(row, 4).toString().isEmpty()) // Setting up the ComboBox implementation
 				{
-					String companyID = sqlTable.getValueAt(row, 3).toString();
-					String categoryID = sqlTable.getValueAt(row,4).toString();
+					String companyName = sqlTable.getValueAt(row, 3).toString();
+					String categoryName = sqlTable.getValueAt(row,4).toString();
 					
-					String company = DBConnector.getDataFromEntity("companies","name", "ID", companyID);
-					String category = DBConnector.getDataFromEntity("categories","name", "ID", categoryID);
-					
-					companyCombo.setSelectedItem(company);
-					categoryCombo.setSelectedItem(category);					
+					companyCombo.setSelectedItem(companyName);
+					categoryCombo.setSelectedItem(categoryName);					
 				}
 			}
 		}
@@ -283,5 +281,15 @@ public class VideoGameFrame extends BaseEntityFrame
 			  categories[i] = DBConnector.getDataFromProperty("categories", "name", sqlTable)[i];
 			  categoryCombo.addItem(categories[i]);
 		 }	  
+	}
+	
+	@Override
+	public void setComboFilter() 
+	{
+		for(int i = 1;i<sqlTable.getColumnCount();i++)
+		{	
+			if(!sqlTable.getColumnName(i).contains("ID")) // Filtering against ComboBox ID
+				filterCombo.insertItemAt(sqlTable.getColumnName(i) , i);	
+		}
 	}
 }

@@ -17,7 +17,7 @@ public class CategoryFrame extends BaseEntityFrame
 			super.setConstructor();
 			setActionListeners();
 			setElements();
-			setFilter();
+			setComboFilter();
 	}
 	class AddAction implements ActionListener
 	{

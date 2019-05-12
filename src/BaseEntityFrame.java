@@ -217,17 +217,18 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		
 	}
 	
-	public void setFilter() 
+	public void setComboFilter() 
 	{
 		for(int i = 1;i<sqlTable.getColumnCount();i++)
 		{	
-			if(!sqlTable.getColumnName(i).contains("ID")) // Filtering against ID
-				filterCombo.insertItemAt(sqlTable.getColumnName(i) , i );
+			if(!sqlTable.getColumnName(i).contains("ID")) // Filtering against ComboBox ID
+				filterCombo.insertItemAt(sqlTable.getColumnName(i) , i);
+			
 		}
 	}
 	public void setForeignFilter()
 	{
-		String[] foreignReferences = {"company", "category"};
+		String[] foreignReferences = {"COMPANY", "CATEGORY"};
 		String[] foreignEntities = {"companies", "categories"};
 		
 		DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
