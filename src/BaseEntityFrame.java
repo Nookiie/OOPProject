@@ -236,7 +236,8 @@ public abstract class BaseEntityFrame extends JFrame
 	}
 	public void setForeignFilter()
 	{
-		DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
+		DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	
 	public void search(String findText,String tabName) 
