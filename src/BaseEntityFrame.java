@@ -42,6 +42,9 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	String tabName = null;
 	String findText = null;
 	
+	String[] foreignReferences = {"COMPANY", "CATEGORY"};
+	String[] foreignEntities = {"companies", "categories"};
+	
 	int id = -1;
 	DBConnector DBhelper = new DBConnector();
 	
@@ -165,9 +168,9 @@ public abstract class BaseEntityFrame <T> extends JFrame
 			 
 			 if(!findText.isEmpty() && !findText.equals(" ")) 
 			 		search(findText,tabName);
+			 
 			// DBhelper.resetTable(referenceText, sqlTable);		
 		}
-		
 	}
 	class MouseTableAction implements MouseListener
 	{
@@ -228,9 +231,6 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	}
 	public void setForeignFilter()
 	{
-		String[] foreignReferences = {"COMPANY", "CATEGORY"};
-		String[] foreignEntities = {"companies", "categories"};
-		
 		DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
 	}
 	

@@ -214,7 +214,7 @@ public class DBConnector
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(sql);
+		// System.out.println(sql);
 		return model;
 	}
 	

@@ -21,7 +21,7 @@ public class VideoGameFrame extends BaseEntityFrame
 	
 	Object[] companies = new Object[20];
 	Object[] categories = new Object[20];
-	 
+	
 	JComboBox<Object> categoryCombo = new JComboBox<Object>(categories);
 	JComboBox<Object> companyCombo = new JComboBox<Object>(companies);
 	
@@ -68,7 +68,8 @@ public class VideoGameFrame extends BaseEntityFrame
 				
 				state.execute();	
 				id = -1;
-				DBhelper.refreshTable(referenceText, sqlTable);
+				// DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -144,7 +145,8 @@ public class VideoGameFrame extends BaseEntityFrame
 				
 				state.execute();
 				id = -1;
-				DBhelper.refreshTable(referenceText, sqlTable);
+				// DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
 			}
 			catch(SQLException e)
 			{
