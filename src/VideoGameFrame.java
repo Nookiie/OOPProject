@@ -35,7 +35,7 @@ public class VideoGameFrame extends BaseEntityFrame
 			super.setConstructor();
 			
 			setForeignFilter();
-			getComboList();
+			setComboList();
 			setActionListeners();
 			setElements();
 			setComboFilter();	
@@ -280,7 +280,7 @@ public class VideoGameFrame extends BaseEntityFrame
 		
 	
 	}
-	public void getComboList()
+	public void setComboList()
 	{
 		 int companiesLength = DBConnector.getDataFromProperty("companies", "name", sqlTable).length;
 		 int categoriesLength = DBConnector.getDataFromProperty("categories", "name", sqlTable).length;
@@ -307,13 +307,20 @@ public class VideoGameFrame extends BaseEntityFrame
 		 }	  
 	}
 	
-	@Override
 	public void setComboFilter() 
 	{
 		for(int i = 1;i<sqlTable.getColumnCount();i++)
 		{	
 			if(!sqlTable.getColumnName(i).contains("ID")) // Filtering against ComboBox ID
-				filterCombo.insertItemAt(sqlTable.getColumnName(i) , i);	
+			{
+				filterCombo.insertItemAt(sqlTable.getColumnName(i) , i);
+			}
 		}
+		filterCombo.removeItemAt(4);
+		filterCombo.removeItemAt(3);
+		
+		filterCombo.addItem("COMPANY");
+		filterCombo.addItem("CATEGORY");
+		
 	}
 }

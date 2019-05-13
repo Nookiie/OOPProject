@@ -220,6 +220,5 @@ public class CompanyFrame extends BaseEntityFrame
 		super.midPanel.add(descriptionLabel);
 		super.midPanel.add(descriptionTField);
 		
-		
 	}
 }

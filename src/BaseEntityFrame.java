@@ -25,7 +25,7 @@ import javax.swing.table.TableColumn;
 
 import Entities.BaseEntity;
 
-public abstract class BaseEntityFrame <T> extends JFrame
+public abstract class BaseEntityFrame extends JFrame
 {
 /*
 * MY POOR ATTEMPT TO START USING GENERICS
@@ -232,7 +232,6 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		{	
 			if(!sqlTable.getColumnName(i).contains("ID")) // Filtering against ComboBox ID
 				filterCombo.insertItemAt(sqlTable.getColumnName(i) , i);
-			
 		}
 	}
 	public void setForeignFilter()
@@ -300,7 +299,7 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		{
 			state = conn.prepareStatement(sql);
 			
-			state.execute();	
+			state.execute();		
 			id = -1;
 			DBhelper.refreshTable(referenceText, sqlTable);
 		}
