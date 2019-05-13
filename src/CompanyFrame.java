@@ -33,8 +33,11 @@ public class CompanyFrame extends BaseEntityFrame
 
 			String sql = "insert into " + referenceText + " values (null,?,?);";
 			
-			if(name.equals(" ") || name.isEmpty() || description.equals(" ") || description.isEmpty())
-				return;
+			if(name.equals(" ") || name.isEmpty())
+			{
+					nameErrorLabel.setVisible(true);
+					return;
+			}
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -102,6 +105,13 @@ public class CompanyFrame extends BaseEntityFrame
 			}
 			String name = nameTField.getText();
 			String description = descriptionTField.getText();
+			
+			if(name.equals(" ") || name.isEmpty())
+			{
+					nameErrorLabel.setVisible(true);
+					return;
+			}
+			
 			
 			conn = DBConnector.getConnection();
 			try

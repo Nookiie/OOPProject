@@ -16,7 +16,10 @@ public class VideoGameFrame extends BaseEntityFrame
 	JLabel descriptionLabel = new JLabel("Description:");
 	JLabel companyLabel = new JLabel("Company: ");
 	JLabel categoryLabel = new JLabel("Category:");
-
+	
+	JLabel categoryErrorLabel = new JLabel("Please select a category");
+	JLabel companyErrorLabel = new JLabel("Please select a company");
+	
 	JTextField descriptionTField = new JTextField();
 	
 	Object[] companies = new Object[20];
@@ -52,10 +55,21 @@ public class VideoGameFrame extends BaseEntityFrame
 			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "name", company));
 			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "name", category));
 			
-			String sql = "insert into videogames values (null,?,?,?,?);"; // Needs to be reworked with Foreign Keys
+			String sql = "insert into videogames values (null,?,?,?,?);"; 
 			
-			if(name.equals(" ") || name.isEmpty() || description.isEmpty() || company.isEmpty() || category.isEmpty())
-				return;
+			if(name.equals(" ") || name.isEmpty() || description.isEmpty() || company.isEmpty() || category.isEmpty() || companyCombo.getSelectedItem().equals(" ") || categoryCombo.getSelectedItem().equals(" "))
+			{
+				if(companyCombo.getSelectedItem().equals(" "))
+				{
+					companyErrorLabel.setVisible(true);
+				}
+				if(categoryCombo.getSelectedItem().equals(" "))
+				{
+					categoryErrorLabel.setVisible(true);
+				}
+				return;	
+			}
+				
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -250,12 +264,20 @@ public class VideoGameFrame extends BaseEntityFrame
 	public void setElements()
 	{
 		super.upPanel.add(videoGameLabel);
+
+		categoryErrorLabel.setVisible(false);
+		companyErrorLabel.setVisible(false);
+		
 		super.midPanel.add(descriptionLabel);
 		super.midPanel.add(descriptionTField);
 		super.midPanel.add(companyLabel);
 		super.midPanel.add(companyCombo);
 		super.midPanel.add(categoryLabel);
 		super.midPanel.add(categoryCombo);
+		
+		super.downPanel.add(companyErrorLabel);
+		super.downPanel.add(categoryErrorLabel);
+		
 	
 	}
 	public void getComboList()

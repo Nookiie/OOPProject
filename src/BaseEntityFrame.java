@@ -59,6 +59,8 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	JScrollPane scrollPane = new JScrollPane(sqlTable);
 
 	JLabel nameLabel = new JLabel("Name:");
+	JLabel nameErrorLabel = new JLabel("Please select a name:");
+	
 	JTextField nameTField = new JTextField();
 	JTextField filterTField = new JTextField();
 
@@ -98,7 +100,7 @@ public abstract class BaseEntityFrame <T> extends JFrame
 	{
 		this.setVisible(false);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		this.setSize(700, 400);
+		this.setSize(700, 600);
 		this.setLocation(450, 200);
 		this.setLayout(new GridLayout(3, 2));
 
@@ -115,6 +117,7 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		midPanel.add(nameTField);
 		
 		filterTField.setColumns(12);
+		
 		downPanel.add(filterTField);
 		downPanel.add(filterCombo);
 		downPanel.add(filterBtn);	
@@ -122,6 +125,9 @@ public abstract class BaseEntityFrame <T> extends JFrame
 		downPanel.add(editBtn);
 		downPanel.add(delBtn);
 		downPanel.add(scrollPane);
+		downPanel.add(nameErrorLabel);
+		
+		nameErrorLabel.setVisible(false);
 		
 		filterBtn.addActionListener(new FilterAction());
 

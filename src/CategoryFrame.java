@@ -27,7 +27,11 @@ public class CategoryFrame extends BaseEntityFrame
 			String name = nameTField.getText();
 			
 			if(name.equals(" ") || name.isEmpty())
+			{
+				nameErrorLabel.setVisible(true);
 				return;
+			}
+				
 			
 			DBhelper.refreshTable(referenceText, sqlTable);
 			String sql = "insert into "+ referenceText + " values (null,?);";
@@ -94,6 +98,12 @@ public class CategoryFrame extends BaseEntityFrame
 				e1.printStackTrace();
 			}
 			String name = nameTField.getText();
+			
+			if(name.equals(" ") || name.isEmpty())
+			{
+				nameErrorLabel.setVisible(true);
+				return;
+			}
 			
 			conn = DBConnector.getConnection();
 			try
