@@ -166,8 +166,8 @@ public class CategoryFrame extends BaseEntityFrame
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String sql = "Select * from " + referenceText + " where name = ?";
-			
+			String sql = "Select * from " + referenceText + " where category_name = ?";
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			conn = DBConnector.getConnection();
 			try
 			{
