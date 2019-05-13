@@ -166,8 +166,18 @@ public abstract class BaseEntityFrame extends JFrame
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+		//	if(tabName.contains("Comp")) {
+		//		tabName=filterCombo.getSelectedItem().toString()+"_name";
+		//		referenceText="companies";
+		//	}
+		//	if(tabName.contains("Categ")) {
+		//		tabName=filterCombo.getSelectedItem().toString()+"_name";
+		//		referenceText="categories";
+		//	}
+			
 			tabName = filterCombo.getSelectedItem().toString();
 
+			
 			DBhelper.refreshNameTable(referenceText, sqlTable, tabName);
 			
 			 findText = filterTField.getText();
@@ -236,25 +246,40 @@ public abstract class BaseEntityFrame extends JFrame
 	}
 	public void setForeignFilter()
 	{
-		DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
+		DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	
 	public void search(String findText,String tabName) 
 	{
 		String sql = null;
-		
+		int columns = sqlTable.getColumnCount();
+
 		if(!findText.isEmpty() && !findText.equals(" ") && tabName.equals("*") && !tabName.isEmpty())
 		{
-			int columns = sqlTable.getColumnCount();
+			
 			StringBuilder sb = new StringBuilder();
 			String currentTab = null;
-			sql = "Select " +tabName + " from " + referenceText + " where ";
+			//sql = "Select " +tabName + " from " + referenceText + " where ";
+			sql = "Select " +tabName + " from " + referenceText
+					+ " join companies on company_id=companies.id"
+					+ " join categories on category_id=categories.id   where ";
 			sb.append(sql);
+			
+			
 			for(int i = 1;i<columns;i++)
 			{
 				currentTab = sqlTable.getColumnName(i);
 				
-				sb.append(currentTab + " = " + "'" + findText + "'" + " OR ");
+				if(i<3) {
+					sb.append( currentTab + " = " + "'" + findText + "'" + " OR ");
+				}
+				
+				else if(i>=3) {
+				sb.append( foreignReferences[i-3] + "_name = " + "'" + findText + "'" + " OR ");
+
+				}
+										
 				if(i == columns - 1)
 				{
 					sb.delete(sb.length() - 3, sb.length());
@@ -262,10 +287,28 @@ public abstract class BaseEntityFrame extends JFrame
 			}
 			sql = sb.toString();
 		}
-		else
-		{
-			sql = "Select " +tabName + " from " + referenceText + " where " +tabName + " = " + "'" + findText + "'";
-		}
+		
+		else if(tabName.equals("COMPANY")) {
+			//		sql = "Select " +" company_name "+ " from " + "companies" + " where " +tabName + " = " + "'" + findText + "'";
+					sql = "Select " +" company_name "+ " from " + "companies" + " where " +tabName + "_name = " + "'" + findText + "'";
+				}
+			else if(tabName.equals("CATEGORY")) {
+					sql = "Select " +" category_name " + " from " + "categories" + " where " +tabName + "_name = " + "'" + findText + "'";
+				}
+			else {
+					sql = "Select " +tabName + " from " + " videogames " + " where " +tabName + " = " + "'" + findText + "'";				
+			}
+		
+		
+		//}
+		//
+			//	columns<3) {
+		//	sql = "Select " +tabName + " from " + referenceText + " where " +tabName + " = " + "'" + findText + "'";
+		//}
+		//else if(columns>=3) {
+		//	sql = "Select " +"*" + " from " + foreignEntities[columns-3] + " where " +tabName + " = " + "'" + findText + "'";
+		//}
+			
 		conn = DBConnector.getConnection();
 		try 
 		{
@@ -301,7 +344,7 @@ public abstract class BaseEntityFrame extends JFrame
 			
 			state.execute();		
 			id = -1;
-			DBhelper.refreshTable(referenceText, sqlTable);
+			//DBhelper.refreshTable(referenceText, sqlTable);
 		}
 		catch(SQLException e)
 		{
