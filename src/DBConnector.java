@@ -100,7 +100,16 @@ public class DBConnector
 		
 		if(!tabName.isEmpty() && !tabName.equals(" "))
 		{
+			if(tabName.equals("COMPANY")) {
+				sql = "select "+ tabName  +"_name from companies";
+			}
+			else if(tabName.equals("CATEGORY")) {
+				sql = "select "+ tabName  +"_name from categories";
+
+			}
+			else {
 			sql = "select "+ tabName  +" from " + entity;
+			}
 		}
 		conn = getConnection();
 		try 
@@ -174,13 +183,31 @@ public class DBConnector
 	public static Model getForeignKeyModel(String entity, String property, String[] foreignEntities, String[] foreignReferences) 
 	{
 		StringBuilder sb = new StringBuilder();
-		String sql = "Select " + entity +".ID, " + entity +"." + property + ", " + entity + ".description, ";
+		String sql="";
+		if(entity.contains("comp")) {
+			sql = "Select " + entity +".company_ID, " + entity +"." + property + ", " + entity + ".company_description, ";
+		}
+		else if(entity.contains("categ")) {
+			sql = "Select " + entity +".category_ID, " + entity +"." + property + ", " + entity + ".category_description, ";
+		}
+		else {
+			sql = "Select " + entity +".ID, " + entity +"." + property + ", " + entity + ".game_description, ";
+		}
+		//String sql = "Select " + entity +".ID, " + entity +"." + property + ", " + entity + ".description, ";
 		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 		sb.append(sql);
 		for(int i = 0;i<foreignEntities.length;i++)
 		{
-			sb.append(foreignEntities[i] + "." + property + " AS " + foreignEntities[i]+ ", ");
-			
+			//	sb.append(foreignEntities[i] + "." + property + " AS " + foreignEntities[i]+ ", ");
+			if(foreignEntities[i].contains("comp")) {
+				sb.append(foreignEntities[i] + "." + "company_name" + " AS " + foreignEntities[i]+ ", ");
+			}
+			else if(foreignEntities[i].contains("categ")){
+				sb.append(foreignEntities[i] + "." + "category_name" + " AS " + foreignEntities[i]+ ", ");
+			}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if(i == foreignEntities.length - 1)
 				sb.deleteCharAt(sb.length() - 2);
 		}
@@ -192,8 +219,16 @@ public class DBConnector
 		}
 		sb.append(" where ");
 		for(int i = 0;i<foreignEntities.length;i++)
-		{
-			sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID" + " AND ");
+		{			
+			if(i==0) {
+					sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID " + " AND ");
+			}
+			else if(i==1) {
+					sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID " + " AND ");
+			}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			//sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID" + " AND ");
 			
 			if(i == foreignEntities.length - 1)
 				sb.delete(sb.length() - 4, sb.length());
