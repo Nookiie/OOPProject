@@ -160,6 +160,7 @@ public class CompanyFrame extends BaseEntityFrame
 				try {
 					state.close();
 					conn.close();
+					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
