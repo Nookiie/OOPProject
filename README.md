@@ -3,5 +3,5 @@ This was made as part of a training exercise by my university's Practice Course.
 Feel free to judge and critique my terrible programming skills.
 
 # To-Do
-- Provide functionality for Foreign Keys of Entity Videogames
-- Make the GUI more presentable
+- Fix the Filter-Update bug
+- Create the more complicated foreign key filter
