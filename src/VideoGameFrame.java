@@ -51,9 +51,9 @@ public class VideoGameFrame extends BaseEntityFrame
 
 			String company = companyCombo.getSelectedItem().toString();
 			String category = categoryCombo.getSelectedItem().toString();
-
-			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "name", company));
-			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "name", category));
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "company_name", company));
+			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "category_name", category));
 			
 			String sql = "insert into videogames values (null,?,?,?,?);"; 
 			
@@ -79,11 +79,11 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.setString(2, description);
 				state.setInt(3, companyID);
 				state.setInt(4, categoryID);
-				
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				state.execute();	
 				id = -1;
 				// DBhelper.refreshTable(referenceText, sqlTable);
-				DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
+				DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -144,9 +144,9 @@ public class VideoGameFrame extends BaseEntityFrame
 			
 			String company = companyCombo.getSelectedItem().toString();
 			String category = categoryCombo.getSelectedItem().toString();
-			
-			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "name", company));
-			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "name", category));
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "company_name", company));
+			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "category_name", category));
 			
 			conn = DBConnector.getConnection();
 			try
@@ -160,7 +160,8 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.execute();
 				id = -1;
 				// DBhelper.refreshTable(referenceText, sqlTable);
-				DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -282,9 +283,9 @@ public class VideoGameFrame extends BaseEntityFrame
 	}
 	public void setComboList()
 	{
-		 int companiesLength = DBConnector.getDataFromProperty("companies", "name", sqlTable).length;
-		 int categoriesLength = DBConnector.getDataFromProperty("categories", "name", sqlTable).length;
-		 
+		 int companiesLength = DBConnector.getDataFromProperty("companies", "company_name", sqlTable).length;
+		 int categoriesLength = DBConnector.getDataFromProperty("categories", "category_name", sqlTable).length;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		  System.out.println(categoriesLength);
 		  System.out.println(companiesLength);
 		 
@@ -296,13 +297,14 @@ public class VideoGameFrame extends BaseEntityFrame
 		  
 		 for(int i = 0;i<companiesLength;i++)
 		 {
-			 companies[i] = DBConnector.getDataFromProperty("companies", "name", sqlTable)[i];
+			 companies[i] = DBConnector.getDataFromProperty("companies", "company_name", sqlTable)[i];
 			 companyCombo.addItem(companies[i]);
 		 }
-		 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		 
 		 for(int i = 0;i<categoriesLength;i++)
 		 {
-			  categories[i] = DBConnector.getDataFromProperty("categories", "name", sqlTable)[i];
+			  categories[i] = DBConnector.getDataFromProperty("categories", "category_name", sqlTable)[i];
 			  categoryCombo.addItem(categories[i]);
 		 }	  
 	}
@@ -319,8 +321,8 @@ public class VideoGameFrame extends BaseEntityFrame
 		filterCombo.removeItemAt(4);
 		filterCombo.removeItemAt(3);
 		
-		filterCombo.addItem("COMPANY");
-		filterCombo.addItem("CATEGORY");
+		filterCombo.addItem("COMPANY_NAME");
+		filterCombo.addItem("CATEGORY_NAME");
 		
 	}
 }

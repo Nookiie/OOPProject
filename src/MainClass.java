@@ -10,6 +10,7 @@ public class MainClass {
 		
 		// Make sure you have the H2 Server Open before running the project
 		IndexFrame index = new IndexFrame();
+		index.setVisible(true);
 	}
 
 }

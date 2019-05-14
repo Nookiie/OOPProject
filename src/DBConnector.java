@@ -58,9 +58,9 @@ public class DBConnector
 		hideIDFromModel(sqlTable);
 	}
 	
-	public void refreshNameTable(String entity, JTable sqlTable, String tabName)
+	public void refreshNameTable(String entity, JTable sqlTable, String tabName,ArrayList<String> tabList)
 	{
-		sqlTable.setModel(DBConnector.getByTabNameModel(entity, tabName));
+		sqlTable.setModel(DBConnector.getByTabNameModel(entity, tabName, tabList));
 		hideIDFromModel(sqlTable);
 	}
 	
@@ -94,14 +94,40 @@ public class DBConnector
 		}
 	}
 	
-	public static Model getByTabNameModel(String entity, String tabName)
-	{
-		String sql = "select * from " + entity;
+	public static Model getByTabNameModel(String entity, String tabName, ArrayList<String> tabList)
+	{//Do not touch, works for videogames foreign key filters
+		// String sql = "select from " + entity;
 		
+		String sql = "select ";
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(sql);
 		if(!tabName.isEmpty() && !tabName.equals(" "))
 		{
-			sql = "select "+ tabName  +" from " + entity;
-		}
+			//if(tabName.equals("COMPANY_NAME")) {
+				//sql = "select game_name, game_description, company_name, category_name " +  "from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ";
+				// sql = "select "  +  "from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ";
+					
+				for(int i = 0;i<tabList.size();i++)
+				{
+					sb.append(tabList.get(i));
+					System.out.println(tabList.get(i));
+					
+					if(i != tabList.size() - 1)
+						sb.append(" , ");
+				}
+				System.out.println("/n end/n");
+
+				sb.append(" from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ");
+				sql = sb.toString();
+			}
+			else if(tabName.equals("CATEGORY_NAME")) {
+				sql = "select *  from videogames join categories on videogames.category_id = categories.id ";
+			}
+			else {
+			sql = "select * from " + entity;
+			}
+		//}
 		conn = getConnection();
 		try 
 		{
@@ -115,6 +141,7 @@ public class DBConnector
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//tabList.clear();
 		return model;
 	}
 	
@@ -174,13 +201,31 @@ public class DBConnector
 	public static Model getForeignKeyModel(String entity, String property, String[] foreignEntities, String[] foreignReferences) 
 	{
 		StringBuilder sb = new StringBuilder();
-		String sql = "Select " + entity +".ID, " + entity +"." + property + ", " + entity + ".description, ";
+		String sql="";
+		if(entity.contains("comp")) {
+			sql = "Select " + entity +".company_ID, " + entity +"." + property + ", " + entity + ".company_description, ";
+		}
+		else if(entity.contains("categ")) {
+			sql = "Select " + entity +".category_ID, " + entity +"." + property + ", " + entity + ".category_description, ";
+		}
+		else {
+			sql = "Select " + entity +".ID, " + entity +"." + property + ", " + entity + ".game_description, ";
+		}
+		//String sql = "Select " + entity +".ID, " + entity +"." + property + ", " + entity + ".description, ";
 		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 		sb.append(sql);
 		for(int i = 0;i<foreignEntities.length;i++)
 		{
-			sb.append(foreignEntities[i] + "." + property + " AS " + foreignEntities[i]+ ", ");
-			
+			//	sb.append(foreignEntities[i] + "." + property + " AS " + foreignEntities[i]+ ", ");
+			if(foreignEntities[i].contains("comp")) {
+				sb.append(foreignEntities[i] + "." + "company_name" + ", "); // CHANGE MADE
+			}
+			else if(foreignEntities[i].contains("categ")){
+				sb.append(foreignEntities[i] + "." + "category_name" + ", "); // CHANGE MADE
+			}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if(i == foreignEntities.length - 1)
 				sb.deleteCharAt(sb.length() - 2);
 		}
@@ -192,8 +237,16 @@ public class DBConnector
 		}
 		sb.append(" where ");
 		for(int i = 0;i<foreignEntities.length;i++)
-		{
-			sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID" + " AND ");
+		{			
+			if(i==0) {
+					sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID " + " AND ");
+			}
+			else if(i==1) {
+					sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID " + " AND ");
+			}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			//sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID" + " AND ");
 			
 			if(i == foreignEntities.length - 1)
 				sb.delete(sb.length() - 4, sb.length());
@@ -317,8 +370,8 @@ public class DBConnector
 		}
 		*/
 		
-		companyColumn.setHeaderValue("COMPANY");
-		categoryColumn.setHeaderValue("CATEGORY");
+		 companyColumn.setHeaderValue("COMPANY");
+		 categoryColumn.setHeaderValue("CATEGORY");
 		
 		sqlTable.addColumn(companyColumn);
 		sqlTable.addColumn(categoryColumn);	

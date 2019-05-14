@@ -1,5 +1,4 @@
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,10 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
-
-import Entities.BaseEntity;
 
 public abstract class BaseEntityFrame extends JFrame
 {
@@ -42,8 +37,10 @@ public abstract class BaseEntityFrame extends JFrame
 	String tabName = null;
 	String findText = null;
 	
+	
 	String[] foreignReferences = {"COMPANY", "CATEGORY"};
 	String[] foreignEntities = {"companies", "categories"};
+	ArrayList<String> tabList = new ArrayList<String>();
 	
 	int id = -1;
 	DBConnector DBhelper = new DBConnector();
@@ -72,6 +69,7 @@ public abstract class BaseEntityFrame extends JFrame
 	JButton editBtn = new JButton("Update");
 	JButton delBtn = new JButton("Delete");
 	JButton filterBtn = new JButton("Filter");		
+	JButton indexBtn = new JButton("Go back");
 	
 	public BaseEntityFrame()
 	{
@@ -124,12 +122,14 @@ public abstract class BaseEntityFrame extends JFrame
 		downPanel.add(addBtn);
 		downPanel.add(editBtn);
 		downPanel.add(delBtn);
+		downPanel.add(indexBtn);
 		downPanel.add(scrollPane);
 		downPanel.add(nameErrorLabel);
 		
 		nameErrorLabel.setVisible(false);
 		
 		filterBtn.addActionListener(new FilterAction());
+		indexBtn.addActionListener(new IndexAction());
 
 	}
 	class AddAction implements ActionListener
@@ -166,17 +166,41 @@ public abstract class BaseEntityFrame extends JFrame
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+		//	if(tabName.contains("Comp")) {
+		//		tabName=filterCombo.getSelectedItem().toString()+"_name";
+		//		referenceText="companies";
+		//	}
+		//	if(tabName.contains("Categ")) {
+		//		tabName=filterCombo.getSelectedItem().toString()+"_name";
+		//		referenceText="categories";
+		//	}
+			
 			tabName = filterCombo.getSelectedItem().toString();
-
-			DBhelper.refreshNameTable(referenceText, sqlTable, tabName);
+			
+			for(int i = 1;i< filterCombo.getItemCount();i++)
+			{
+				if(!filterCombo.getItemAt(i).contains("ID"))
+				 tabList.add(filterCombo.getItemAt(i));
+			}
+			DBhelper.refreshNameTable(referenceText, sqlTable, tabName,tabList);
 			
 			 findText = filterTField.getText();
 			 
 			 if(!findText.isEmpty() && !findText.equals(" ")) 
-			 		search(findText,tabName);
+			 		search(findText,tabName, tabList);
 			 
+			 tabList.clear();
 			// DBhelper.resetTable(referenceText, sqlTable);		
 		}
+	}
+	
+	class IndexAction implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+		}
+		
 	}
 	class MouseTableAction implements MouseListener
 	{
@@ -236,25 +260,49 @@ public abstract class BaseEntityFrame extends JFrame
 	}
 	public void setForeignFilter()
 	{
-		DBhelper.refreshForeignKeyTable(referenceText, "name", foreignEntities, foreignReferences,sqlTable);
+		 DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	
-	public void search(String findText,String tabName) 
+	/**
+	 * @param findText
+	 * @param tabName
+	 */
+	public void search(String findText,String tabName, ArrayList<String> tabList) 
 	{
 		String sql = null;
-		
+		int columns = sqlTable.getColumnCount();
+
 		if(!findText.isEmpty() && !findText.equals(" ") && tabName.equals("*") && !tabName.isEmpty())
 		{
-			int columns = sqlTable.getColumnCount();
+			
 			StringBuilder sb = new StringBuilder();
 			String currentTab = null;
-			sql = "Select " +tabName + " from " + referenceText + " where ";
+			//sql = "Select " +tabName + " from " + referenceText + " where ";
+			if(referenceText.equals("videogames")){
+			sql = "Select * from " + referenceText
+					+ " join companies on company_id=companies.id"
+					+ " join categories on category_id=categories.id   where ";
+			}
+			else {
+				sql = "Select * from " + referenceText + " where "; // CHANGE MADE
+			}
 			sb.append(sql);
+			
+			
 			for(int i = 1;i<columns;i++)
 			{
 				currentTab = sqlTable.getColumnName(i);
 				
-				sb.append(currentTab + " = " + "'" + findText + "'" + " OR ");
+				if(i<3) {
+					sb.append( currentTab + " = " + "'" + findText + "'" + " OR ");
+				}
+				
+				else if(i>=3) {
+				sb.append( foreignReferences[i-3] + "_name = " + "'" + findText + "'" + " OR ");
+
+				}
+										
 				if(i == columns - 1)
 				{
 					sb.delete(sb.length() - 3, sb.length());
@@ -262,10 +310,81 @@ public abstract class BaseEntityFrame extends JFrame
 			}
 			sql = sb.toString();
 		}
-		else
+		else if(findText.equals(" ")|| findText.isEmpty())
 		{
-			sql = "Select " +tabName + " from " + referenceText + " where " +tabName + " = " + "'" + findText + "'";
+			if(tabName.contains("COMPANY")) {
+				//!!! If tabName is from "videogames foreign key" turns into "company",
+				//    if it is from "Companies"=> "company_name" and that created a lot of spaghet
+				
+				//		sql = "Select " +" company_name " + " from " + "companies" + " where " + tabName + " = " + "'" + findText + "'";
+						sql = "Select * "  + " from " + "companies" + " where " + " company" + "_name = " + "'" + findText + "'";
+				}
+				//else if(tabName.equals("CATEGORY")) {
+				//		sql = "Select " +" category_name " + " from " + "categories" + " where " + tabName + "_name = " + "'" + findText + "'";
+				//	}
+			else if(tabName.contains("CATEGORY")) {
+				// Same here as in company!
+						sql = "Select * from " + "categories" + " where " + " category" + "_name = " + "'" + findText + "'";
+
+				}	
+			else {
+						sql = "Select * from " + " videogames " + " where " +tabName + " = " + "'" + findText + "'";				
+				}
 		}
+		else 
+		{
+			//if(tabName.contains("COMPANY"))
+		//	{
+				sql = "Select ";
+				StringBuilder sb = new StringBuilder();
+				sb.append(sql);
+				for(int i = 0;i<tabList.size();i++)
+				{
+					sb.append(tabList.get(i));
+					
+					if(i != tabList.size() - 1)
+						sb.append(", ");
+										
+				}
+				//sb.append(" from " + "videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id where company_name = " + "'" + findText + "'");
+				sb.append(" from " + "videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id where "+ tabName +  " = '" + findText + "'");
+				sql = sb.toString();
+			//}
+			//if(tabName.contains("CATEGORY"))
+			//{
+				
+		//	}
+		}
+		
+		/*else if(tabName.contains("COMPANY")) {
+			//!!! If tabName is from "videogames foreign key" turns into "company",
+			//    if it is from "Companies"=> "company_name" and that created a lot of spaghet
+			
+			//		sql = "Select " +" company_name " + " from " + "companies" + " where " + tabName + " = " + "'" + findText + "'";
+					sql = "Select * "  + " from " + "companies" + " where " + " company" + "_name = " + "'" + findText + "'";
+			}
+			//else if(tabName.equals("CATEGORY")) {
+			//		sql = "Select " +" category_name " + " from " + "categories" + " where " + tabName + "_name = " + "'" + findText + "'";
+			//	}
+		else if(tabName.contains("CATEGORY")) {
+			// Same here as in company!
+					sql = "Select * from " + "categories" + " where " + " category" + "_name = " + "'" + findText + "'";
+
+			}	
+		else {
+					sql = "Select * from " + " videogames " + " where " +tabName + " = " + "'" + findText + "'";				
+			}
+		*/
+		
+		//}
+		//
+			//	columns<3) {
+		//	sql = "Select " +tabName + " from " + referenceText + " where " +tabName + " = " + "'" + findText + "'";
+		//}
+		//else if(columns>=3) {
+		//	sql = "Select " +"*" + " from " + foreignEntities[columns-3] + " where " +tabName + " = " + "'" + findText + "'";
+		//}
+			
 		conn = DBConnector.getConnection();
 		try 
 		{
@@ -301,7 +420,7 @@ public abstract class BaseEntityFrame extends JFrame
 			
 			state.execute();		
 			id = -1;
-			DBhelper.refreshTable(referenceText, sqlTable);
+			//DBhelper.refreshTable(referenceText, sqlTable);
 		}
 		catch(SQLException e)
 		{

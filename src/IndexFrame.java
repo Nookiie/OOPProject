@@ -14,7 +14,7 @@ public class IndexFrame extends JFrame
 	Connection conn = null;
 	PreparedStatement statement = null;
 	
-	JLabel introLabel = new JLabel("Welcome to the VideoGameSite Control Panel");
+	JLabel introLabel = new JLabel("Welcome to the Site Control Panel");
 	
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
@@ -30,9 +30,6 @@ public class IndexFrame extends JFrame
 	public IndexFrame()
 	{
 		this.setVisible(true);
-		videoGameTab.setVisible(false);
-		categoryTab.setVisible(false);
-		companyTab.setVisible(false);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(700, 400);
@@ -47,9 +44,13 @@ public class IndexFrame extends JFrame
 		categoriesButton.addActionListener(new CategoryView());
 		videoGamesButton.addActionListener(new VideoGameView());
 		companiesButton.addActionListener(new CompanyView());
-	}
 }
-class CompanyView implements ActionListener
+public void setVisibility(boolean value)
+{
+	this.setVisible(value);
+}
+
+public class CompanyView implements ActionListener
 {	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -71,10 +72,8 @@ class VideoGameView implements ActionListener
 {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
-
 			VideoGameFrame videoGame = new VideoGameFrame();
 			videoGame.setVisible(true);
 	}
-	
+}
 }
