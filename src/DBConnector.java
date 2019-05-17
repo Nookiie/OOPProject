@@ -52,7 +52,7 @@ public class DBConnector
 		}
 		return model;
 	}
-	public void refreshTable(String entity, JTable sqlTable)
+	public void refreshByEntityTable(String entity, JTable sqlTable)
 	{
 		sqlTable.setModel(DBConnector.getAllModel(entity));
 		hideIDFromModel(sqlTable);
@@ -75,6 +75,12 @@ public class DBConnector
 		sqlTable.setModel(DBConnector.getForeignKeyModel(entity, property,foreignEntities, foreignReferences));
 		 renameForeignColumns(foreignReferences, sqlTable);
 		 hideIDFromModel(sqlTable);
+	}
+	
+	public void refreshAllTable(JTable sqlTable)
+	{
+		sqlTable.setModel(DBConnector.getAllPossibleModel());
+		hideIDFromModel(sqlTable);
 	}
 	
 	public void renameForeignColumns(String[] foreignReferences, JTable sqlTable)
@@ -142,6 +148,26 @@ public class DBConnector
 			e.printStackTrace();
 		}
 		//tabList.clear();
+		return model;
+	}
+	
+	public static Model getAllPossibleModel()
+	{
+		String sql = "select * from videogames join categories on videogames.category_id = categories.id join companies on videogames.company_id = companies.id"; 
+		
+		conn = getConnection();
+		try 
+		{
+			PreparedStatement state = conn.prepareStatement(sql);
+			state = conn.prepareStatement(sql);
+
+			result = state.executeQuery();
+			model = new Model(result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return model;
 	}
 	

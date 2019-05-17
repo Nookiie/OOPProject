@@ -47,7 +47,7 @@ public class CompanyFrame extends BaseEntityFrame
 				state.setString(2, description);
 				
 				state.execute();	
-				DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshByEntityTable(referenceText, sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -123,7 +123,7 @@ public class CompanyFrame extends BaseEntityFrame
 				
 				state.execute();
 				id = -1;
-				DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshByEntityTable(referenceText, sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -152,7 +152,7 @@ public class CompanyFrame extends BaseEntityFrame
 				state.setInt(1, id);
 				state.execute();
 				id = -1;
-				DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshByEntityTable(referenceText, sqlTable);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

@@ -17,6 +17,7 @@ public class IndexFrame extends JFrame
 {
 	Connection conn = null;
 	PreparedStatement statement = null;
+	static DBConnector DBhelper = new DBConnector();
 	
 	JLabel introLabel = new JLabel("Welcome to the Site Control Panel");
 	
@@ -28,8 +29,8 @@ public class IndexFrame extends JFrame
 	JButton categoriesButton = new JButton("Categories");
 	JButton videoGamesButton = new JButton("VideoGames");
 	
-	JButton filterButtonCompany = new JButton("Filter by Company");
-	JButton filterButtonCategory= new JButton("Filter by Category");
+	JButton companiesFilterButton = new JButton("Filter by Company");
+	JButton categoriesFilterButton= new JButton("Filter by Category");
 	
 	JTextField companyInput = new JTextField();
 	JTextField categoryInput = new JTextField();
@@ -65,15 +66,21 @@ public class IndexFrame extends JFrame
 		
 		downPanel.setLayout(new FlowLayout());
 		downPanel.add(companyInput);
-		downPanel.add(filterButtonCompany);
+		downPanel.add(companiesFilterButton);
 		downPanel.add(categoryInput);
-		downPanel.add(filterButtonCategory);
+		downPanel.add(categoriesFilterButton);
 		
 		this.add(scrollPane);
+		
+		DBhelper.refreshAllTable(sqlTable);
 		
 		categoriesButton.addActionListener(new CategoryView());
 		videoGamesButton.addActionListener(new VideoGameView());
 		companiesButton.addActionListener(new CompanyView());
+		
+		companiesFilterButton.addActionListener(new CompanyFilterView());
+		categoriesFilterButton.addActionListener(new CategoryFilterView());
+		
 }
 public void setVisibility(boolean value)
 {
@@ -104,6 +111,23 @@ class VideoGameView implements ActionListener
 	public void actionPerformed(ActionEvent arg0) {
 			VideoGameFrame videoGame = new VideoGameFrame();
 			videoGame.setVisible(true);
+	}
+}
+class CompanyFilterView implements ActionListener
+{
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+}
+class CategoryFilterView implements ActionListener
+{
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 	}
 }
 }

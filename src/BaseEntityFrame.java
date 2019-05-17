@@ -107,7 +107,7 @@ public abstract class BaseEntityFrame extends JFrame
 		this.add(downPanel);
 			
 		scrollPane.setPreferredSize(new Dimension(650, 75));
-		DBhelper.refreshTable(referenceText, sqlTable);
+		DBhelper.refreshByEntityTable(referenceText, sqlTable);
 		
 		midPanel.setLayout(new GridLayout(4,2));
 		

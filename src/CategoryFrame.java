@@ -34,7 +34,7 @@ public class CategoryFrame extends BaseEntityFrame
 			}
 				
 			
-			DBhelper.refreshTable(referenceText, sqlTable);
+			DBhelper.refreshByEntityTable(referenceText, sqlTable);
 			String sql = "insert into "+ referenceText + " values (null,?);";
 			
 			conn = DBConnector.getConnection();
@@ -45,7 +45,7 @@ public class CategoryFrame extends BaseEntityFrame
 				
 				state.execute();	
 				id = -1;
-				DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshByEntityTable(referenceText, sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -115,7 +115,7 @@ public class CategoryFrame extends BaseEntityFrame
 				
 				state.execute();
 				id = -1;
-				DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshByEntityTable(referenceText, sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -147,7 +147,7 @@ public class CategoryFrame extends BaseEntityFrame
 				state.execute();
 				
 				id = -1;
-				DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshByEntityTable(referenceText, sqlTable);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

@@ -192,7 +192,7 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.setInt(1, id);
 				state.execute();
 				id = -1;
-				DBhelper.refreshTable(referenceText, sqlTable);
+				DBhelper.refreshByEntityTable(referenceText, sqlTable);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
