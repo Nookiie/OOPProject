@@ -162,39 +162,43 @@ public class CategoryFrame extends BaseEntityFrame
 			}
 	}
 }
-	class FilterAction implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			String sql = "Select * from " + referenceText + " where category_name = ?";
+//NEW!!!!!!!!!!!!!!!!!
+// Got rid of this vvvv because we use the BaseEntityFrame Filter action like in VideoGameFrame
+//	and CompanyFrame!!!
+	
+	//class FilterAction implements ActionListener
+	//{
+	//	@Override
+	//	public void actionPerformed(ActionEvent e) {
+	//		String sql = "Select * from " + referenceText + " where category_name = ?";
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			conn = DBConnector.getConnection();
-			try
-			{
-				String text = filterTField.getText();
-				state = conn.prepareStatement(sql);
-				state.setString(1,text);
-				state.execute();
-				
+	//		conn = DBConnector.getConnection();
+	//		try
+	//		{
+	//			String text = filterTField.getText();
+	//			state = conn.prepareStatement(sql);
+	//			state.setString(1,text);
+	//			state.execute();
+	//			
 				// DBhelper.resetTable(referenceText, sqlTable);
-			}
-			catch(SQLException e1)
-			{
-				e1.printStackTrace();
-			}
-			finally
-			{
-				try {
-					state.close();
-					conn.close();
-					clearForm();
-				} catch (SQLException e1) {
+	//		}
+	//		catch(SQLException e1)
+	//		{
+	//			e1.printStackTrace();
+	//		}
+	//		finally
+	//		{
+	//			try {
+	//				state.close();
+	//				conn.close();
+	//				clearForm();
+	//			} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}		
-			}
-		}	
-	}
+	//				e1.printStackTrace();
+	//			}		
+	//		}
+	//	}	
+	//}
 	class MouseTableAction implements MouseListener
 	{
 		@Override
@@ -236,7 +240,7 @@ public class CategoryFrame extends BaseEntityFrame
 		addBtn.addActionListener(new AddAction());
 		editBtn.addActionListener(new EditAction());
 		delBtn.addActionListener(new DelAction());
-		filterBtn.addActionListener(new FilterAction());
+	//	filterBtn.addActionListener(new FilterAction());
 		sqlTable.addMouseListener(new MouseTableAction());
 	}
 	

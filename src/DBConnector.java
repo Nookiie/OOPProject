@@ -123,9 +123,20 @@ public class DBConnector
 						sb.append(" , ");
 				}
 				System.out.println("/n end/n");
+				if(entity.equals("categories")) {
+					sb.append(" from categories ");
+					sql = sb.toString();
+				}
+////////////NEW!!!!!!!!/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-				sb.append(" from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ");
+				else if(entity.equals("companies")) {
+					sb.append(" from companies ");
+					sql = sb.toString();
+				}
+////////////NEW!!!!!!!!/////////////////////////////////////////////////////////////////////////////////////////////////////
+				else{sb.append(" from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ");
 				sql = sb.toString();
+				}
 			}
 			else if(tabName.equals("CATEGORY_NAME")) {
 				sql = "select *  from videogames join categories on videogames.category_id = categories.id ";
