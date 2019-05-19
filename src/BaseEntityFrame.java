@@ -347,7 +347,12 @@ public abstract class BaseEntityFrame extends JFrame
 										
 				}
 				//sb.append(" from " + "videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id where company_name = " + "'" + findText + "'");
+				if(referenceText.contains("videogames"))
 				sb.append(" from " + "videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id where "+ tabName +  " = '" + findText + "'");
+				else {// Makes filtering with text possible in CategoryFrame and CompanyFrame
+//////////////////////NEW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					sb.append(" from "+ referenceText+" where "+ tabName +  " = '" + findText + "'");
+				}
 				sql = sb.toString();
 			//}
 			//if(tabName.contains("CATEGORY"))

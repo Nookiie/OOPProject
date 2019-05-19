@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,6 +44,9 @@ public class IndexFrame extends JFrame
 	VideoGameFrame videoGameTab = new VideoGameFrame();
 	CategoryFrame categoryTab = new CategoryFrame();
 	CompanyFrame companyTab = new CompanyFrame();
+	
+	String referenceText = "videogames";
+	
 	
 	public IndexFrame()
 	{
@@ -117,19 +121,94 @@ class VideoGameView implements ActionListener
 }
 class CompanyFilterView implements ActionListener
 {
+////////////NEW!!!!!!!!/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		String findTextCompany = companyInput.getText();		
+
+		String sql = null;
+		if(!findTextCompany.isEmpty() && !findTextCompany.equals(" ") ) {
+			sql = "Select game_name, game_description, category_name, company_name, company_description "
+					+ "from videogames join companies on company_id=companies.id "
+					+ "join categories on category_id=categories.id where "
+					+ "game_name = '"+findTextCompany+"' or company_name = '"+findTextCompany+"'";
+			conn = DBConnector.getConnection();
+			try 
+			{
+				statement = conn.prepareStatement(sql);
+				statement.execute();	
+				
+				DBhelper.refreshQueryTable(referenceText, sqlTable, "", sql);
+			} 
+			catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
+			finally 
+			{
+				try 
+				{
+					statement.close();
+					conn.close();
+				} catch (SQLException e1) 
+				{
+					e1.printStackTrace();
+				}
+			}
+			
+		}
+		else {
+			DBhelper.refreshAllTable(sqlTable);
+		}						
 	}
 }
+
+
 class CategoryFilterView implements ActionListener
 {
+////////////NEW!!!!!!!!/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		String findTextCategory = categoryInput.getText();
+		
+		String sql = null;
+		if(!findTextCategory.isEmpty() && !findTextCategory.equals(" ") ) {
+			sql = "Select game_name, game_description, category_name, company_name "
+					+ "from videogames join companies on company_id=companies.id "
+					+ "join categories on category_id=categories.id where "
+					+ "game_name = '"+findTextCategory+"' or category_name = '"+findTextCategory+"'";
+		
+			conn = DBConnector.getConnection();
+			try 
+			{
+				statement = conn.prepareStatement(sql);
+				statement.execute();	
+				
+				DBhelper.refreshQueryTable(referenceText, sqlTable, "", sql);
+			} 
+			catch (SQLException e1) 
+			{
+				e1.printStackTrace();
+			}
+			finally 
+			{
+				try 
+				{
+					statement.close();
+					conn.close();
+				} catch (SQLException e1) 
+				{
+					e1.printStackTrace();
+				}
+			}
+		}
+		else {
+			DBhelper.refreshAllTable(sqlTable);
+		}			
 	}
 }
 }
