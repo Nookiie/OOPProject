@@ -212,6 +212,12 @@ public class VideoGameFrame extends BaseEntityFrame
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int row = sqlTable.getSelectedRow();
+			
+			//NEW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//Decrement all values to make these appear in update boxes after filtering!
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
+			
 			id = Integer.parseInt(sqlTable.getValueAt(row, 0).toString());
 			if(e.getClickCount() == 1) {
 				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
