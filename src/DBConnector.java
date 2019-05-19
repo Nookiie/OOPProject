@@ -158,7 +158,6 @@ public class DBConnector
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		tabList.clear();
 		return model;
 	}
 	

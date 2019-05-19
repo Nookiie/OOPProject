@@ -176,11 +176,12 @@ public abstract class BaseEntityFrame extends JFrame
 		//	}
 			
 			tabName = filterCombo.getSelectedItem().toString();
-			
+				
 			for(int i = 1;i< filterCombo.getItemCount();i++)
 			{
 			 if(!filterCombo.getItemAt(i).contains("ID"))
 				 tabList.add(filterCombo.getItemAt(i));
+			 	System.out.println(tabList.get(i - 1) + " TABLIST");
 			}
 			DBhelper.refreshNameTable(referenceText, sqlTable, tabName,tabList);
 			
@@ -273,7 +274,7 @@ public abstract class BaseEntityFrame extends JFrame
 		String sql = null;
 		int columns = sqlTable.getColumnCount();
 
-		if(!findText.isEmpty() && !findText.equals(" ") && tabName.equals("*") && !tabName.isEmpty())
+		if(!findText.isEmpty() && !findText.equals(" ")  && tabName.equals("*") && !tabName.isEmpty())
 		{
 			
 			StringBuilder sb = new StringBuilder();
@@ -328,20 +329,20 @@ public abstract class BaseEntityFrame extends JFrame
 
 				}	
 			else {
-						sql = "Select * from " + " videogames " + " where " +tabName + " = " + "'" + findText + "'";				
+						sql = "Select * from " + " videogames " + " where " + tabName + " = " + "'" + findText + "'";				
 				}
 		}
 		else 
 		{
 			//if(tabName.contains("COMPANY"))
 		//	{
-				sql = "Select ";
+			System.out.println(tabList.size());
+				sql = "Select  ";
 				StringBuilder sb = new StringBuilder();
 				sb.append(sql);
 				for(int i = 0;i<tabList.size();i++)
 				{
 					sb.append(tabList.get(i));
-					
 					if(i != tabList.size() - 1)
 						sb.append(", ");
 										

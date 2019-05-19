@@ -161,7 +161,6 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.execute();
 				id = -1;
 				// DBhelper.refreshTable(referenceText, sqlTable);
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
 			}
 			catch(SQLException e)
