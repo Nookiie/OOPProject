@@ -16,6 +16,7 @@ public class VideoGameFrame extends BaseEntityFrame
 	JLabel descriptionLabel = new JLabel("Description:");
 	JLabel companyLabel = new JLabel("Company: ");
 	JLabel categoryLabel = new JLabel("Category:");
+	int id = -1;
 	
 	JLabel categoryErrorLabel = new JLabel("Please select a category");
 	JLabel companyErrorLabel = new JLabel("Please select a company");
@@ -126,7 +127,6 @@ public class VideoGameFrame extends BaseEntityFrame
 				stringBuilder.append(sql);
 				for(int i = 2;i<=columns;i++)
 				{
-					
 					stringBuilder.append(state.getMetaData().getColumnName(i) + " = ?, ");
 					
 					if(i == columns)
@@ -156,7 +156,8 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.setString(2,description);
 				state.setInt(3,companyID);
 				state.setInt(4,categoryID);
-				
+				state.setInt(5,id);
+							
 				state.execute();
 				id = -1;
 				// DBhelper.refreshTable(referenceText, sqlTable);
