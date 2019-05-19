@@ -52,7 +52,6 @@ public class VideoGameFrame extends BaseEntityFrame
 
 			String company = companyCombo.getSelectedItem().toString();
 			String category = categoryCombo.getSelectedItem().toString();
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "company_name", company));
 			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "category_name", category));
 			
@@ -80,7 +79,6 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.setString(2, description);
 				state.setInt(3, companyID);
 				state.setInt(4, categoryID);
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				state.execute();	
 				id = -1;
 				// DBhelper.refreshTable(referenceText, sqlTable);
@@ -144,7 +142,6 @@ public class VideoGameFrame extends BaseEntityFrame
 			
 			String company = companyCombo.getSelectedItem().toString();
 			String category = categoryCombo.getSelectedItem().toString();
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "company_name", company));
 			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "category_name", category));
 			
@@ -213,10 +210,6 @@ public class VideoGameFrame extends BaseEntityFrame
 		public void mouseClicked(MouseEvent e) {
 			
 			int row = sqlTable.getSelectedRow();
-			
-			//NEW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//Decrement all values to make these appear in update boxes after filtering!
-			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			
 			if(sqlTable.getColumnName(0).equals("ID"))
 			{	
@@ -312,7 +305,6 @@ public class VideoGameFrame extends BaseEntityFrame
 	{
 		 int companiesLength = DBConnector.getDataFromProperty("companies", "company_name", sqlTable).length;
 		 int categoriesLength = DBConnector.getDataFromProperty("categories", "category_name", sqlTable).length;
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		  System.out.println(categoriesLength);
 		  System.out.println(companiesLength);
 		 
@@ -327,8 +319,6 @@ public class VideoGameFrame extends BaseEntityFrame
 			 companies[i] = DBConnector.getDataFromProperty("companies", "company_name", sqlTable)[i];
 			 companyCombo.addItem(companies[i]);
 		 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		 
 		 for(int i = 0;i<categoriesLength;i++)
 		 {
 			  categories[i] = DBConnector.getDataFromProperty("categories", "category_name", sqlTable)[i];

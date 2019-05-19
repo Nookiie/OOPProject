@@ -111,11 +111,7 @@ public class DBConnector
 		tabList.add(entity + ".ID");
 		if(!tabName.isEmpty() && !tabName.equals(" "))
 		{
-			//if(tabName.equals("COMPANY_NAME")) {
-				//sql = "select game_name, game_description, company_name, category_name " +  "from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ";
-				// sql = "select "  +  "from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ";
-				
-				
+								
 				for(int i = 0;i<tabList.size();i++)
 				{
 					sb.append(tabList.get(i));
@@ -249,7 +245,6 @@ public class DBConnector
 		}
 		//String sql = "Select " + entity +".ID, " + entity +"." + property + ", " + entity + ".description, ";
 		
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		sb.append(sql);
 		for(int i = 0;i<foreignEntities.length;i++)
@@ -261,7 +256,6 @@ public class DBConnector
 			else if(foreignEntities[i].contains("categ")){
 				sb.append(foreignEntities[i] + "." + "category_name" + ", "); // CHANGE MADE
 			}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if(i == foreignEntities.length - 1)
 				sb.deleteCharAt(sb.length() - 2);
 		}
@@ -280,7 +274,6 @@ public class DBConnector
 			else if(i==1) {
 					sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID " + " AND ");
 			}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			//sb.append(entity + "." + foreignReferences[i] + "_ID"  + " = " + foreignEntities[i] + ".ID" + " AND ");
 			
@@ -379,7 +372,6 @@ public class DBConnector
 				state.close();
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -397,14 +389,6 @@ public class DBConnector
 		TableColumn categoryColumn = new TableColumn(1);	
 		
 		model = getForeignKeyModel(entity, property, foreignEntities, foreignReferences);
-		
-		/*
-		for(int i = 0;i<model.getColumnCount();i++)
-		{
-			sqlTable.setValueAt(model.getValueAt(i, 2) , i, 3);
-			sqlTable.setValueAt(model.getValueAt(i,3), i, 4);
-		}
-		*/
 		
 		 companyColumn.setHeaderValue("COMPANY");
 		 categoryColumn.setHeaderValue("CATEGORY");

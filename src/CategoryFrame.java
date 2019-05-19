@@ -76,7 +76,6 @@ public class CategoryFrame extends BaseEntityFrame
 			try {
 				state = conn.prepareStatement(sql);
 			} catch (SQLException e2) {
-				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
 			try
@@ -95,7 +94,6 @@ public class CategoryFrame extends BaseEntityFrame
 				stringBuilder.append(" where ID = ?");
 				sql = stringBuilder.toString();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			String name = nameTField.getText();

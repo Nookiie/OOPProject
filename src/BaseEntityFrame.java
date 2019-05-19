@@ -23,9 +23,6 @@ import javax.swing.JTextField;
 public abstract class BaseEntityFrame extends JFrame
 {
 /*
-* MY POOR ATTEMPT TO START USING GENERICS
-* THIS IS WHEN I FOUND OUT JAVA GENERICS SUCK
-* 
 * THIS CLASS IS USED AS A BASIS FOR ALL ENTITY FRAMES
 */ 
 	
@@ -166,15 +163,6 @@ public abstract class BaseEntityFrame extends JFrame
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		//	if(tabName.contains("Comp")) {
-		//		tabName=filterCombo.getSelectedItem().toString()+"_name";
-		//		referenceText="companies";
-		//	}
-		//	if(tabName.contains("Categ")) {
-		//		tabName=filterCombo.getSelectedItem().toString()+"_name";
-		//		referenceText="categories";
-		//	}
-			
 			tabName = filterCombo.getSelectedItem().toString();
 				
 			for(int i = 1;i< filterCombo.getItemCount();i++)
@@ -262,7 +250,6 @@ public abstract class BaseEntityFrame extends JFrame
 	public void setForeignFilter()
 	{
 		 DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	
 	/**
@@ -279,14 +266,13 @@ public abstract class BaseEntityFrame extends JFrame
 			
 			StringBuilder sb = new StringBuilder();
 			String currentTab = null;
-			//sql = "Select " +tabName + " from " + referenceText + " where ";
 			if(referenceText.equals("videogames")){
 			sql = "Select * from " + referenceText
 					+ " join companies on company_id=companies.id"
 					+ " join categories on category_id=categories.id   where ";
 			}
 			else {
-				sql = "Select * from " + referenceText + " where "; // CHANGE MADE
+				sql = "Select * from " + referenceText + " where "; 
 			}
 			sb.append(sql);
 			
@@ -315,14 +301,10 @@ public abstract class BaseEntityFrame extends JFrame
 		{
 			if(tabName.contains("COMPANY")) {
 				//!!! If tabName is from "videogames foreign key" turns into "company",
-				//    if it is from "Companies"=> "company_name" and that created a lot of spaghet
+				//    if it is from "Companies"=> "company_name" 
 				
-				//		sql = "Select " +" company_name " + " from " + "companies" + " where " + tabName + " = " + "'" + findText + "'";
 						sql = "Select * "  + " from " + "companies" + " where " + " company" + "_name = " + "'" + findText + "'";
 				}
-				//else if(tabName.equals("CATEGORY")) {
-				//		sql = "Select " +" category_name " + " from " + "categories" + " where " + tabName + "_name = " + "'" + findText + "'";
-				//	}
 			else if(tabName.contains("CATEGORY")) {
 				// Same here as in company!
 						sql = "Select * from " + "categories" + " where " + " category" + "_name = " + "'" + findText + "'";
@@ -334,8 +316,6 @@ public abstract class BaseEntityFrame extends JFrame
 		}
 		else 
 		{
-			//if(tabName.contains("COMPANY"))
-		//	{
 			System.out.println(tabList.size());
 				sql = "Select  ";
 				StringBuilder sb = new StringBuilder();
@@ -350,46 +330,11 @@ public abstract class BaseEntityFrame extends JFrame
 				//sb.append(" from " + "videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id where company_name = " + "'" + findText + "'");
 				if(referenceText.contains("videogames"))
 				sb.append(" from " + "videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id where "+ tabName +  " = '" + findText + "'");
-				else {// Makes filtering with text possible in CategoryFrame and CompanyFrame
-//////////////////////NEW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					sb.append(" from "+ referenceText+" where "+ tabName +  " = '" + findText + "'");
+				else {
+					sb.append(" from "+ referenceText+" where "+ tabName +  " = '" + findText + "'"); // Makes filtering with text possible in CategoryFrame and CompanyFrame
 				}
 				sql = sb.toString();
-			//}
-			//if(tabName.contains("CATEGORY"))
-			//{
-				
-		//	}
 		}
-		
-		/*else if(tabName.contains("COMPANY")) {
-			//!!! If tabName is from "videogames foreign key" turns into "company",
-			//    if it is from "Companies"=> "company_name" and that created a lot of spaghet
-			
-			//		sql = "Select " +" company_name " + " from " + "companies" + " where " + tabName + " = " + "'" + findText + "'";
-					sql = "Select * "  + " from " + "companies" + " where " + " company" + "_name = " + "'" + findText + "'";
-			}
-			//else if(tabName.equals("CATEGORY")) {
-			//		sql = "Select " +" category_name " + " from " + "categories" + " where " + tabName + "_name = " + "'" + findText + "'";
-			//	}
-		else if(tabName.contains("CATEGORY")) {
-			// Same here as in company!
-					sql = "Select * from " + "categories" + " where " + " category" + "_name = " + "'" + findText + "'";
-
-			}	
-		else {
-					sql = "Select * from " + " videogames " + " where " +tabName + " = " + "'" + findText + "'";				
-			}
-		*/
-		
-		//}
-		//
-			//	columns<3) {
-		//	sql = "Select " +tabName + " from " + referenceText + " where " +tabName + " = " + "'" + findText + "'";
-		//}
-		//else if(columns>=3) {
-		//	sql = "Select " +"*" + " from " + foreignEntities[columns-3] + " where " +tabName + " = " + "'" + findText + "'";
-		//}
 			
 		conn = DBConnector.getConnection();
 		try 

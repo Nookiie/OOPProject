@@ -118,7 +118,6 @@ class VideoGameView implements ActionListener
 }
 class CompanyFilterView implements ActionListener
 {
-////////////NEW!!!!!!!!/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -165,7 +164,6 @@ class CompanyFilterView implements ActionListener
 
 class CategoryFilterView implements ActionListener
 {
-////////////NEW!!!!!!!!/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
