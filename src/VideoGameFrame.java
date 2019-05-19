@@ -69,7 +69,6 @@ public class VideoGameFrame extends BaseEntityFrame
 				}
 				return;	
 			}
-				
 			
 			conn = DBConnector.getConnection();
 			try 
@@ -104,7 +103,6 @@ public class VideoGameFrame extends BaseEntityFrame
 	}
 	class EditAction implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			String sql = "SELECT * FROM " + referenceText;
@@ -142,6 +140,7 @@ public class VideoGameFrame extends BaseEntityFrame
 			
 			String company = companyCombo.getSelectedItem().toString();
 			String category = categoryCombo.getSelectedItem().toString();
+			
 			int companyID = Integer.parseInt(DBConnector.getDataFromEntity("companies","ID", "company_name", company));
 			int categoryID = Integer.parseInt(DBConnector.getDataFromEntity("categories","ID", "category_name", category));
 			
@@ -172,14 +171,11 @@ public class VideoGameFrame extends BaseEntityFrame
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				
 			}
 		}
-		
 	}
 	class DelAction implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String sql = "delete from " + referenceText + " where id=?";

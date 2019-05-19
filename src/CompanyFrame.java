@@ -112,7 +112,6 @@ public class CompanyFrame extends BaseEntityFrame
 					return;
 			}
 			
-			
 			conn = DBConnector.getConnection();
 			try
 			{
@@ -136,8 +135,7 @@ public class CompanyFrame extends BaseEntityFrame
 					conn.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
-				}
-				
+				}	
 			}
 		}	
 	}

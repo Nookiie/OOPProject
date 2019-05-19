@@ -14,5 +14,4 @@ public class MainClass {
 		 // Make sure you have the H2 Server Open before running the project
 		index.setVisible(true);
 	}
-
 }
