@@ -211,6 +211,8 @@ public class VideoGameFrame extends BaseEntityFrame
 	{
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			
+			
 			int row = sqlTable.getSelectedRow();
 			id = Integer.parseInt(sqlTable.getValueAt(row, 0).toString());
 			if(e.getClickCount() == 1) {

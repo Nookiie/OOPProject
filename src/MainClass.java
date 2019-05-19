@@ -1,7 +1,8 @@
 import javax.swing.JFrame;
 
 public class MainClass {
-
+	
+	static IndexFrame index = new IndexFrame();
 	public static void main(String[] args) 
 	{
 		// CategoryFrame myFrame = new CategoryFrame();
@@ -9,7 +10,7 @@ public class MainClass {
 		// CategoryFrame myCaFrame = new CategoryFrame();
 		
 		// Make sure you have the H2 Server Open before running the project
-		IndexFrame index = new IndexFrame();
+		
 		index.setVisible(true);
 	}
 

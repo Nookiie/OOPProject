@@ -21,6 +21,8 @@ public class IndexFrame extends JFrame
 	
 	JLabel introLabel = new JLabel("Welcome to the Site Control Panel");
 	
+	String referenceText = "videogames";
+	
 	JPanel upPanel = new JPanel();
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
