@@ -45,9 +45,6 @@ public class IndexFrame extends JFrame
 	CategoryFrame categoryTab = new CategoryFrame();
 	CompanyFrame companyTab = new CompanyFrame();
 	
-	String referenceText = "videogames";
-	
-	
 	public IndexFrame()
 	{
 		this.setVisible(true);

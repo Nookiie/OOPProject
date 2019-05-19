@@ -179,7 +179,7 @@ public abstract class BaseEntityFrame extends JFrame
 			
 			for(int i = 1;i< filterCombo.getItemCount();i++)
 			{
-				if(!filterCombo.getItemAt(i).contains("ID"))
+			 if(!filterCombo.getItemAt(i).contains("ID"))
 				 tabList.add(filterCombo.getItemAt(i));
 			}
 			DBhelper.refreshNameTable(referenceText, sqlTable, tabName,tabList);

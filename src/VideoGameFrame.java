@@ -212,14 +212,14 @@ public class VideoGameFrame extends BaseEntityFrame
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			
-			
 			int row = sqlTable.getSelectedRow();
 			
 			//NEW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			//Decrement all values to make these appear in update boxes after filtering!
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			
-			
+			if(sqlTable.getColumnName(0).equals("ID"))
+			{	
 			id = Integer.parseInt(sqlTable.getValueAt(row, 0).toString());
 			if(e.getClickCount() == 1) {
 				nameTField.setText(sqlTable.getValueAt(row, 1).toString());
@@ -233,7 +233,26 @@ public class VideoGameFrame extends BaseEntityFrame
 					companyCombo.setSelectedItem(companyName);
 					categoryCombo.setSelectedItem(categoryName);					
 				}
+			}		
+		}
+			else
+			{
+				id = Integer.parseInt(sqlTable.getValueAt(row, 4).toString());
+				if(e.getClickCount() == 1) {
+					nameTField.setText(sqlTable.getValueAt(row, 0).toString());
+					descriptionTField.setText(sqlTable.getValueAt(row, 1).toString());
+					
+					if(!sqlTable.getValueAt(row,3).toString().isEmpty() && !sqlTable.getValueAt(row, 4).toString().isEmpty()) // Setting up the ComboBox implementation
+					{
+						String companyName = sqlTable.getValueAt(row, 2).toString();
+						String categoryName = sqlTable.getValueAt(row,3).toString();
+						
+						companyCombo.setSelectedItem(companyName);
+						categoryCombo.setSelectedItem(categoryName);					
+					}
+				}	
 			}
+		
 		}
 
 		@Override

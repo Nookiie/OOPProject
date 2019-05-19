@@ -108,12 +108,14 @@ public class DBConnector
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(sql);
+		tabList.add(entity + ".ID");
 		if(!tabName.isEmpty() && !tabName.equals(" "))
 		{
 			//if(tabName.equals("COMPANY_NAME")) {
 				//sql = "select game_name, game_description, company_name, category_name " +  "from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ";
 				// sql = "select "  +  "from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ";
-					
+				
+				
 				for(int i = 0;i<tabList.size();i++)
 				{
 					sb.append(tabList.get(i));
@@ -127,13 +129,11 @@ public class DBConnector
 					sb.append(" from categories ");
 					sql = sb.toString();
 				}
-////////////NEW!!!!!!!!/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 				else if(entity.equals("companies")) {
 					sb.append(" from companies ");
 					sql = sb.toString();
 				}
-////////////NEW!!!!!!!!/////////////////////////////////////////////////////////////////////////////////////////////////////
 				else{sb.append(" from videogames join companies on videogames.company_id = companies.id join categories on videogames.category_id = categories.id ");
 				sql = sb.toString();
 				}
@@ -158,7 +158,7 @@ public class DBConnector
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//tabList.clear();
+		tabList.clear();
 		return model;
 	}
 	
