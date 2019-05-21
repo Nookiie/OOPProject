@@ -83,11 +83,7 @@ public class DBConnector
 	
 	public void refreshForeignKeyTable(String entity, String property, String[] foreignEntities, String[] foreignReferences,String[] foreignNames, JTable sqlTable)
 	{
-<<<<<<< HEAD
 		 sqlTable.setModel(DBConnector.getForeignKeyModel(entity, property,foreignEntities, foreignReferences));
-=======
-		sqlTable.setModel(DBConnector.getForeignKeyModel(entity, property,foreignEntities, foreignReferences));
->>>>>>> f46727ebc05b64be16b4fbf55ffd07f9f6640f1e
 		 renameForeignColumns(foreignReferences,foreignNames, sqlTable);
 		 hideIDFromModel(sqlTable);
 	}

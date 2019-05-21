@@ -165,14 +165,6 @@ public abstract class BaseEntityFrame extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			tabName = filterCombo.getSelectedItem().toString();
-<<<<<<< HEAD
-=======
-				//if(tabName.equals("")) {
-				//	System.out.println("O no no no");
-					
-					
-				//}
->>>>>>> f46727ebc05b64be16b4fbf55ffd07f9f6640f1e
 			for(int i = 1;i< filterCombo.getItemCount();i++)
 			{
 			 if(!filterCombo.getItemAt(i).contains("ID"))
@@ -272,7 +264,6 @@ public abstract class BaseEntityFrame extends JFrame
 
 		if(!findText.isEmpty() && !findText.equals(" ")  && tabName.equals("*") && !tabName.isEmpty())
 		{
-<<<<<<< HEAD
 			
 			if(tabName.equals("*")) {
 				System.out.println("nop");
