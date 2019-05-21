@@ -81,7 +81,7 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.execute();	
 				id = -1;
 				// DBhelper.refreshTable(referenceText, sqlTable);
-				DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
+				DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,foreignNames,sqlTable);
 			} 
 			catch (SQLException e1) 
 			{
@@ -157,7 +157,7 @@ public class VideoGameFrame extends BaseEntityFrame
 				state.execute();
 				id = -1;
 				// DBhelper.refreshTable(referenceText, sqlTable);
-				DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
+				DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,foreignNames,sqlTable);
 			}
 			catch(SQLException e)
 			{
@@ -226,6 +226,7 @@ public class VideoGameFrame extends BaseEntityFrame
 		}
 			else
 			{
+				
 				id = Integer.parseInt(sqlTable.getValueAt(row, 4).toString());
 				if(e.getClickCount() == 1) {
 					nameTField.setText(sqlTable.getValueAt(row, 0).toString());
