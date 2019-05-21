@@ -34,9 +34,20 @@ public class DBConnector
 		return conn;
 	}
 	public static Model getAllModel(String entity) 
-	{		
-		String sql = "select * from " + entity;
-		
+	{	
+		String sql="";
+		if(!entity.equals("videogames")) {
+			System.out.println("booo");
+			 sql = "select * from " + entity;
+		}
+		else {
+			//HERE!
+			 sql = "select videogames.id, game_name, game_description, company_name, category_name from videogames join companies on company_id=companies.id "
+					+ " join categories on category_id=categories.id"
+					;
+
+		}
+			
 		conn = getConnection();
 		try 
 		{
@@ -70,10 +81,10 @@ public class DBConnector
 		hideIDFromModel(sqlTable);
 	}
 	
-	public void refreshForeignKeyTable(String entity, String property, String[] foreignEntities, String[] foreignReferences, JTable sqlTable)
+	public void refreshForeignKeyTable(String entity, String property, String[] foreignEntities, String[] foreignReferences,String[] foreignNames, JTable sqlTable)
 	{
-		sqlTable.setModel(DBConnector.getForeignKeyModel(entity, property,foreignEntities, foreignReferences));
-		 renameForeignColumns(foreignReferences, sqlTable);
+		 sqlTable.setModel(DBConnector.getForeignKeyModel(entity, property,foreignEntities, foreignReferences));
+		 renameForeignColumns(foreignReferences,foreignNames, sqlTable);
 		 hideIDFromModel(sqlTable);
 	}
 	
@@ -83,7 +94,7 @@ public class DBConnector
 		hideIDFromModel(sqlTable);
 	}
 	
-	public void renameForeignColumns(String[] foreignReferences, JTable sqlTable)
+	public void renameForeignColumns(String[] foreignReferences,String[] foreignNames, JTable sqlTable)
 	{
 		int columns = sqlTable.getColumnCount();
 		
@@ -94,8 +105,8 @@ public class DBConnector
 		for(int i = 0;i<foreignReferences.length;i++)
 		{
 			TableColumn column = new TableColumn(i + columns - foreignReferences.length);
-			column.setHeaderValue(foreignReferences[i]);
-			
+			//column.setHeaderValue(foreignReferences[i]);
+			column.setHeaderValue(foreignNames[i]);
 			sqlTable.addColumn(column);
 		}
 	}
@@ -138,7 +149,7 @@ public class DBConnector
 				sql = "select *  from videogames join categories on videogames.category_id = categories.id ";
 			}
 			else {
-			sql = "select * from " + entity;
+			sql = "select * fromm " + entity;
 			}
 		//}
 		conn = getConnection();
@@ -159,6 +170,7 @@ public class DBConnector
 	
 	public static Model getAllPossibleModel()
 	{
+		
 		String sql = "select * from videogames join categories on videogames.category_id = categories.id join companies on videogames.company_id = companies.id"; 
 		
 		conn = getConnection();

@@ -34,8 +34,9 @@ public abstract class BaseEntityFrame extends JFrame
 	String tabName = null;
 	String findText = null;
 	
-	
 	String[] foreignReferences = {"COMPANY", "CATEGORY"};
+	String[] foreignNames = {"COMPANY_NAME", "CATEGORY_NAME"};
+
 	String[] foreignEntities = {"companies", "categories"};
 	ArrayList<String> tabList = new ArrayList<String>();
 	
@@ -75,7 +76,7 @@ public abstract class BaseEntityFrame extends JFrame
 		
 	public  void clearForm()
 	{
-		nameTField.setText("");
+		nameTField.setText(" ");
 	}
 	
 	public String getReference(String reference)
@@ -95,7 +96,7 @@ public abstract class BaseEntityFrame extends JFrame
 	{
 		this.setVisible(false);
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		this.setSize(700, 600);
+		this.setSize(750, 600);
 		this.setLocation(450, 200);
 		this.setLayout(new GridLayout(3, 2));
 
@@ -103,7 +104,7 @@ public abstract class BaseEntityFrame extends JFrame
 		this.add(midPanel);
 		this.add(downPanel);
 			
-		scrollPane.setPreferredSize(new Dimension(650, 75));
+		scrollPane.setPreferredSize(new Dimension(650, 100));
 		DBhelper.refreshByEntityTable(referenceText, sqlTable);
 		
 		midPanel.setLayout(new GridLayout(4,2));
@@ -164,13 +165,13 @@ public abstract class BaseEntityFrame extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			tabName = filterCombo.getSelectedItem().toString();
-				
 			for(int i = 1;i< filterCombo.getItemCount();i++)
 			{
 			 if(!filterCombo.getItemAt(i).contains("ID"))
 				 tabList.add(filterCombo.getItemAt(i));
 			 	System.out.println(tabList.get(i - 1) + " TABLIST");
 			}
+			
 			DBhelper.refreshNameTable(referenceText, sqlTable, tabName,tabList);
 			
 			 findText = filterTField.getText();
@@ -249,7 +250,7 @@ public abstract class BaseEntityFrame extends JFrame
 	}
 	public void setForeignFilter()
 	{
-		 DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,sqlTable);
+		 DBhelper.refreshForeignKeyTable(referenceText, "game_name", foreignEntities, foreignReferences,foreignNames,sqlTable);
 	}
 	
 	/**
@@ -264,6 +265,12 @@ public abstract class BaseEntityFrame extends JFrame
 		if(!findText.isEmpty() && !findText.equals(" ")  && tabName.equals("*") && !tabName.isEmpty())
 		{
 			
+			if(tabName.equals("*")) {
+				System.out.println("nop");
+				return;
+			}/*
+			
+			//This is literally unnecessary me thinks
 			StringBuilder sb = new StringBuilder();
 			String currentTab = null;
 			if(referenceText.equals("videogames")){
@@ -296,6 +303,7 @@ public abstract class BaseEntityFrame extends JFrame
 				}
 			}
 			sql = sb.toString();
+		*/
 		}
 		else if(findText.equals(" ")|| findText.isEmpty())
 		{
@@ -343,6 +351,7 @@ public abstract class BaseEntityFrame extends JFrame
 			state.execute();	
 			
 			DBhelper.refreshQueryTable(referenceText, sqlTable, tabName, sql);
+			
 		} 
 		catch (SQLException e1) 
 		{

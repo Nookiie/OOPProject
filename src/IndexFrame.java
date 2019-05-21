@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,12 +22,18 @@ public class IndexFrame extends JFrame
 	static DBConnector DBhelper = new DBConnector();
 	
 	JLabel introLabel = new JLabel("Welcome to the Site Control Panel");
+	JLabel gameNameLabel = new JLabel("Game Name:");
+	JLabel gameDescriptionLabel = new JLabel("Game Desc:");
+	JLabel companyLabel = new JLabel("Company Name:");
+	JLabel categoryLabel = new JLabel("Category Name:");
 	
 	String referenceText = "videogames";
 	
 	JPanel upPanel = new JPanel();
 	JPanel midPanel = new JPanel();
 	JPanel downPanel = new JPanel();
+	JPanel downMidPanel = new JPanel();
+	JPanel downMidAltPanel = new JPanel();
 	
 	JButton companiesButton = new JButton("Companies");
 	JButton categoriesButton = new JButton("Categories");
@@ -35,6 +42,8 @@ public class IndexFrame extends JFrame
 	JButton companiesFilterButton = new JButton("Filter by Company");
 	JButton categoriesFilterButton= new JButton("Filter by Category");
 	
+	JTextField gameCompanyInput = new JTextField();
+	JTextField gameCategoryInput = new JTextField();
 	JTextField companyInput = new JTextField();
 	JTextField categoryInput = new JTextField();
 	
@@ -50,14 +59,16 @@ public class IndexFrame extends JFrame
 		this.setVisible(true);
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(700, 400);
+		this.setSize(700, 800);
 		this.setLocation(450, 200);
-		this.setLayout(new GridLayout(4,2));
+		this.setLayout(new GridLayout(7,1));
 			
 		this.add(upPanel);
 		this.add(midPanel);
-		this.add(downPanel);
-
+		this.add(downMidAltPanel);
+		this.add(downMidPanel);
+		//this.add(downPanel);
+		
 		upPanel.add(introLabel);
 		midPanel.setLayout(new GridLayout(1,6));
 		midPanel.add(categoriesButton);
@@ -66,12 +77,33 @@ public class IndexFrame extends JFrame
 		
 		companyInput.setColumns(12);
 		categoryInput.setColumns(12);
+		gameCompanyInput.setColumns(12);
+		gameCategoryInput.setColumns(12);
 		
-		downPanel.setLayout(new FlowLayout());
-		downPanel.add(companyInput);
-		downPanel.add(companiesFilterButton);
-		downPanel.add(categoryInput);
-		downPanel.add(categoriesFilterButton);
+		downMidAltPanel.setLayout(new FlowLayout());
+		
+		downMidAltPanel.add(gameDescriptionLabel);
+		downMidAltPanel.add(gameCompanyInput);
+		scrollPane.setPreferredSize(new Dimension(650,500));
+		
+		downMidAltPanel.add(companyLabel);
+		downMidAltPanel.add(companyInput);
+		
+		downMidAltPanel.add(companiesFilterButton);
+		
+		downMidPanel.setLayout(new FlowLayout());
+
+		downMidPanel.add(gameNameLabel);
+		downMidPanel.add(gameCategoryInput);
+		
+		downMidPanel.add(categoryLabel);
+		downMidPanel.add(categoryInput);
+		
+		downMidPanel.add(categoriesFilterButton);
+
+		
+		//downPanel.setLayout(new GridLayout(4,1));
+	
 		
 		this.add(scrollPane);
 		
@@ -122,14 +154,19 @@ class CompanyFilterView implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		
+		
 		String findTextCompany = companyInput.getText();		
 
+		String findTextGameDescription = gameCompanyInput.getText();
 		String sql = null;
+		
 		if(!findTextCompany.isEmpty() && !findTextCompany.equals(" ") ) {
 			sql = "Select game_name, game_description, category_name, company_name, company_description "
 					+ "from videogames join companies on company_id=companies.id "
 					+ "join categories on category_id=categories.id where "
-					+ "game_name = '"+findTextCompany+"' or company_name = '"+findTextCompany+"'";
+					+ "game_description = '"+ findTextGameDescription + "' AND company_name = '" + findTextCompany + "'";
+					//findTextCompany+"' or company_name = '"+findTextCompany+"'";
 			conn = DBConnector.getConnection();
 			try 
 			{
@@ -168,14 +205,16 @@ class CategoryFilterView implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		String findTextCategory = categoryInput.getText();
+		String findTextCategoryName = categoryInput.getText();
+		String findTextGameName = gameCategoryInput.getText();
 		
 		String sql = null;
-		if(!findTextCategory.isEmpty() && !findTextCategory.equals(" ") ) {
+		if(!findTextCategoryName.isEmpty() && !findTextCategoryName.equals(" ") ) {
 			sql = "Select game_name, game_description, category_name, company_name "
 					+ "from videogames join companies on company_id=companies.id "
 					+ "join categories on category_id=categories.id where "
-					+ "game_name = '"+findTextCategory+"' or category_name = '"+findTextCategory+"'";
+					+ "game_name = '"+ findTextGameName + "' AND category_name = '" + findTextCategoryName + "'"; 
+					//findTextCategoryName+"' or category_name = '"+findTextCategoryName+"'";
 		
 			conn = DBConnector.getConnection();
 			try 

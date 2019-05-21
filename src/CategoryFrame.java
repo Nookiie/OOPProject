@@ -87,6 +87,7 @@ public class CategoryFrame extends BaseEntityFrame
 				for(int i = 2;i<=columns;i++)
 				{
 					stringBuilder.append(state.getMetaData().getColumnName(i) + " = ?, ");	
+					
 					if(i == columns)
 						stringBuilder.deleteCharAt(stringBuilder.length() - 2); // Removing the comma on the last SET query before when
 				}

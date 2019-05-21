@@ -90,7 +90,6 @@ public class CompanyFrame extends BaseEntityFrame
 				stringBuilder.append(sql);
 				for(int i = 2;i<=columns;i++)
 				{
-					
 					stringBuilder.append(state.getMetaData().getColumnName(i) + " = ?, ");
 					
 					if(i == columns)
